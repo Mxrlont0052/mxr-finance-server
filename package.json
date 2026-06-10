@@ -1,0 +1,12 @@
+{
+  "name": "mxr-finance-server",
+  "version": "1.0.0",
+  "description": "MXR Finance - Webhook server for Banco Pichincha email parsing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
