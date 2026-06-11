@@ -450,6 +450,60 @@ html,body {
 
       <div style="text-align:center;padding:20px;font-size:11px;color:var(--text3)">MXR Finance v2.0 · Hecho para Marlon 🎧</div>
     </div>
+
+    <!-- CONSEJOS IA -->
+    <div class="screen" id="s-ai">
+      <div style="height:env(safe-area-inset-top,44px);min-height:44px"></div>
+      <div class="page-header">
+        <div>
+          <div class="page-title">Consejos</div>
+          <div class="page-subtitle">Tu asesor financiero personal</div>
+        </div>
+      </div>
+
+      <!-- RESUMEN RÁPIDO -->
+      <div id="ai-summary-card" style="margin:0 16px 14px;background:var(--glass-purple);border:1px solid var(--glass-purple-border);border-radius:22px;padding:18px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(192,132,252,0.6),transparent)"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px">Tu situación este mes</div>
+        <div id="ai-quick-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div style="text-align:center">
+            <div style="font-size:18px;font-weight:800;color:var(--green)" id="ai-stat-income">$0</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Ingresos</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:18px;font-weight:800;color:var(--red)" id="ai-stat-expense">$0</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Gastos</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:18px;font-weight:800;color:var(--purple-glow)" id="ai-stat-save">$0</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Disponible</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAT CON IA -->
+      <div style="margin:0 16px 14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Pregúntale a tu asesor</div>
+        <div id="ai-messages" style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px;max-height:280px;overflow-y:auto;scrollbar-width:none"></div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="ai-input" placeholder="¿Cuándo me conviene pagar el crédito?" style="flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:12px 16px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none" onkeydown="if(event.key==='Enter')sendAI()">
+          <button onclick="sendAI()" style="width:44px;height:44px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- SUGERENCIAS RÁPIDAS -->
+      <div style="padding:0 16px;margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Preguntas frecuentes</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div onclick="quickAI('¿Estoy gastando demasiado este mes?')" style="background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:12px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:background 0.2s" ontouchstart="this.style.background='rgba(255,255,255,0.08)'" ontouchend="this.style.background=''">💸 ¿Estoy gastando demasiado este mes?</div>
+          <div onclick="quickAI('¿Cuándo me conviene pagar el crédito de la Macbook?')" style="background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:12px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:background 0.2s" ontouchstart="this.style.background='rgba(255,255,255,0.08)'" ontouchend="this.style.background=''">💳 ¿Cuándo conviene pagar el crédito?</div>
+          <div onclick="quickAI('¿Cuánto debería ahorrar este mes para mis metas?')" style="background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:12px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:background 0.2s" ontouchstart="this.style.background='rgba(255,255,255,0.08)'" ontouchend="this.style.background=''">🎯 ¿Cuánto debería ahorrar este mes?</div>
+          <div onclick="quickAI('Dame un plan financiero para este mes basado en mis datos')" style="background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:12px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:background 0.2s" ontouchstart="this.style.background='rgba(255,255,255,0.08)'" ontouchend="this.style.background=''">📊 Plan financiero del mes</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ADD TRANSACTION -->
@@ -537,6 +591,36 @@ html,body {
     </div>
   </div>
 
+  <!-- ABONAR A META -->
+  <div class="add-screen" id="abonar-screen" onclick="closeAbonar(event)">
+    <div class="add-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" id="abonar-title">Abonar a meta</div>
+      <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px" id="abonar-sub"></p>
+      <div class="amount-display"><span class="amount-currency">$</span><span class="amount-value" id="abonar-amount-display">0</span></div>
+      <div class="numpad">
+        <div class="num-btn" onclick="abonarNumPress('1')">1</div><div class="num-btn" onclick="abonarNumPress('2')">2</div><div class="num-btn" onclick="abonarNumPress('3')">3</div>
+        <div class="num-btn" onclick="abonarNumPress('4')">4</div><div class="num-btn" onclick="abonarNumPress('5')">5</div><div class="num-btn" onclick="abonarNumPress('6')">6</div>
+        <div class="num-btn" onclick="abonarNumPress('7')">7</div><div class="num-btn" onclick="abonarNumPress('8')">8</div><div class="num-btn" onclick="abonarNumPress('9')">9</div>
+        <div class="num-btn" onclick="abonarNumPress('.')">.</div><div class="num-btn" onclick="abonarNumPress('0')">0</div>
+        <div class="num-btn del" onclick="abonarNumPress('del')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></div>
+      </div>
+      <button class="btn-primary" onclick="saveAbonar()">✓ Abonar a esta meta</button>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN IN-APP -->
+  <div id="inapp-notif" style="position:absolute;top:env(safe-area-inset-top,44px);left:0;right:0;z-index:100;padding:8px 16px;transform:translateY(-120%);transition:transform 0.45s cubic-bezier(.34,1.1,.64,1);pointer-events:none">
+    <div style="background:rgba(24,24,30,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.5)">
+      <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">🎧</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;margin-bottom:2px">MXR Finance</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="inapp-msg">Notificación</div>
+      </div>
+      <div style="font-size:10px;color:var(--text3)">ahora</div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <!-- NAV BAR iOS 26 -->
@@ -556,9 +640,9 @@ html,body {
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
       <span class="nav-label">Metas</span>
     </div>
-    <div class="nav-item" id="nav-settings" onclick="goTo('settings')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      <span class="nav-label">Ajustes</span>
+    <div class="nav-item" id="nav-ai" onclick="goTo('ai')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/><circle cx="18" cy="5" r="3" fill="currentColor" stroke="none"/></svg>
+      <span class="nav-label">Consejos</span>
     </div>
   </div>
 </div>
@@ -744,9 +828,100 @@ function filterTxns(f,el){currentFilter=f;document.querySelectorAll('.filter-chi
 // ── RENDER GOALS
 function renderGoals(){
   const cont=document.getElementById('goals-list');
-  if(state.goals.length===0) cont.innerHTML=`<div class="empty-state" style="padding:30px 40px"><div class="empty-icon">🎯</div><div class="empty-title">Sin metas aún</div><div class="empty-sub">Crea tu primera meta de ahorro</div></div>`;
-  else cont.innerHTML=state.goals.map((g,i)=>{const p=Math.min(Math.round((g.current/g.target)*100),100);return `<div class="goal-big-card anim-item" style="animation-delay:${0.05+i*0.07}s"><div class="goal-big-top"><div class="goal-emoji">${g.emoji}</div><div class="goal-badge">${p}%</div></div><div class="goal-big-name">${g.name}</div><div class="goal-big-sub">Meta de ahorro personal</div><div class="goal-big-prog"><div class="goal-nums"><span class="goal-current">${fmt(g.current)}</span><span class="goal-total">de ${fmt(g.target)}</span></div><div class="prog-bg"><div class="prog-fill" style="width:${p}%"></div></div><div class="goal-ftr" style="margin-top:6px"><span class="goal-pct">Faltan ${fmt(g.target-g.current)}</span><span class="goal-rem" onclick="deleteGoal(${g.id})" style="cursor:pointer;color:var(--red)">Eliminar</span></div></div></div>`;}).join('');
+  if(state.goals.length===0){
+    cont.innerHTML=`<div class="empty-state" style="padding:30px 40px"><div class="empty-icon">🎯</div><div class="empty-title">Sin metas aún</div><div class="empty-sub">Crea tu primera meta de ahorro</div></div>`;
+  } else {
+    cont.innerHTML=state.goals.map((g,i)=>{
+      const p=Math.min(Math.round((g.current/g.target)*100),100);
+      const remaining=Math.max(g.target-g.current,0);
+      const done=remaining<=0;
+      // Calcular meses estimados si tiene cuota mensual
+      const meses = g.monthly>0 ? Math.ceil(remaining/g.monthly) : null;
+      return `<div class="goal-big-card anim-item" style="animation-delay:${0.05+i*0.07}s">
+        <div class="goal-big-top">
+          <div class="goal-emoji">${g.emoji}</div>
+          <div class="goal-badge" style="${done?'background:rgba(74,222,128,0.15);color:var(--green)':''}">${done?'✅ Lograda':p+'%'}</div>
+        </div>
+        <div class="goal-big-name">${g.name}</div>
+        <div class="goal-big-sub">${done?'¡Meta alcanzada! 🎉':'Meta de ahorro personal'}</div>
+        <div class="goal-big-prog">
+          <div class="goal-nums">
+            <span class="goal-current">${fmt(g.current)}</span>
+            <span class="goal-total">de ${fmt(g.target)}</span>
+          </div>
+          <div class="prog-bg"><div class="prog-fill" style="width:${p}%"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;align-items:center">
+            <span style="font-size:11px;color:var(--purple-light);font-weight:700">Faltan ${fmt(remaining)}</span>
+            ${meses ? `<span style="font-size:11px;color:var(--text3)">~${meses} ${meses===1?'mes':'meses'} abonando ${fmt(g.monthly)}/mes</span>` : ''}
+          </div>
+          ${!done ? `
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+            <div onclick="openAbonar(${g.id})" style="background:linear-gradient(135deg,rgba(106,0,255,0.25),rgba(168,85,247,0.15));border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:transform 0.25s cubic-bezier(.34,1.56,.64,1)" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform=''">
+              <div style="font-size:10px;color:var(--purple-glow);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Abonar</div>
+              <div style="font-size:16px;font-weight:800;color:#fff">+ $</div>
+            </div>
+            <div onclick="openSetMonthly(${g.id})" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:transform 0.25s cubic-bezier(.34,1.56,.64,1)" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform=''">
+              <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Cuota/mes</div>
+              <div style="font-size:16px;font-weight:800;color:var(--text2)">${g.monthly>0?fmt(g.monthly):'Fijar'}</div>
+            </div>
+          </div>` : ''}
+          <div style="text-align:right;margin-top:10px">
+            <span onclick="deleteGoal(${g.id})" style="font-size:11px;color:var(--red);cursor:pointer">Eliminar</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
   renderCredits();
+}
+
+// ── ABONAR A META
+let abonarGoalId=null, abonarAmount='';
+function openAbonar(id){
+  abonarGoalId=id; abonarAmount='';
+  const g=state.goals.find(g=>g.id===id);
+  document.getElementById('abonar-title').textContent=`Abonar a — ${g.name}`;
+  document.getElementById('abonar-sub').textContent=`Tienes ${fmt(g.current)} de ${fmt(g.target)}`;
+  document.getElementById('abonar-amount-display').textContent='0';
+  document.getElementById('abonar-screen').classList.add('open');
+}
+function closeAbonar(e){if(e.target===document.getElementById('abonar-screen'))document.getElementById('abonar-screen').classList.remove('open');}
+function abonarNumPress(k){
+  const btn=event.currentTarget;
+  btn.style.transform='scale(0.82)';setTimeout(()=>{btn.style.transition='transform 0.35s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';setTimeout(()=>btn.style.transition='',400);},60);
+  if(k==='del')abonarAmount=abonarAmount.slice(0,-1);
+  else if(k==='.'){if(!abonarAmount.includes('.'))abonarAmount+='.';}
+  else{if(abonarAmount.length>=8)return;abonarAmount+=k;}
+  document.getElementById('abonar-amount-display').textContent=abonarAmount||'0';
+}
+async function saveAbonar(){
+  const amount=parseFloat(abonarAmount);
+  if(!amount||amount<=0){showToast('Ingresa un monto','error');return;}
+  const g=state.goals.find(g=>g.id===abonarGoalId);
+  if(!g)return;
+  g.current=(g.current||0)+amount;
+  // También registrar como transacción de ahorro
+  state.transactions.unshift({id:Date.now(),type:'gasto',amount,desc:`Ahorro: ${g.name}`,cat:'ahorro',date:new Date().toISOString()});
+  await pushToServer();
+  document.getElementById('abonar-screen').classList.remove('open');
+  const done=g.current>=g.target;
+  showToast(done?`🎉 ¡Meta ${g.name} lograda!`:`✅ +${fmt(amount)} abonado a ${g.name}`,'success');
+  if(done) showInAppNotif(`🎉 ¡Lograste tu meta "${g.name}"!`);
+  renderGoals(); renderDashboard();
+  if(state.currentTab==='txns')renderTxns();
+}
+
+// ── FIJAR CUOTA MENSUAL
+function openSetMonthly(id){
+  const g=state.goals.find(g=>g.id===id);
+  const val=prompt(`¿Cuánto puedes abonar por mes a "${g.name}"?`,g.monthly||'');
+  if(val===null)return;
+  const monthly=parseFloat(val);
+  if(!monthly||monthly<=0){showToast('Monto inválido','error');return;}
+  g.monthly=monthly;
+  pushToServer();
+  renderGoals();
+  showToast(`✅ Cuota fijada en ${fmt(monthly)}/mes`,'success');
 }
 
 // ── RENDER CREDITS
@@ -761,7 +936,7 @@ function renderCredits(){
 }
 
 // ── NAVIGATION
-const tabs=['home','txns','goals','settings'];
+const tabs=['home','txns','goals','ai','settings'];
 function goTo(tab){
   if(state.currentTab===tab)return;
   const prev=document.getElementById('s-'+state.currentTab);
@@ -770,13 +945,14 @@ function goTo(tab){
   const next=document.getElementById('s-'+tab);
   next.style.transform='translateX(30px) scale(0.97)';next.style.opacity='0';next.classList.add('active');
   requestAnimationFrame(()=>requestAnimationFrame(()=>{next.style.transform='';next.style.opacity='';}));
-  tabs.forEach(t=>{const el=document.getElementById('nav-'+t);el.classList.toggle('active',t===tab);});
+  tabs.forEach(t=>{const el=document.getElementById('nav-'+t);if(el)el.classList.toggle('active',t===tab);});
   const navEl=document.getElementById('nav-'+tab);
   if(navEl){navEl.style.transform='scale(0.85)';setTimeout(()=>{navEl.style.transition='transform 0.4s cubic-bezier(.34,1.56,.64,1),background 0.22s';navEl.style.transform='scale(1)';setTimeout(()=>navEl.style.transition='',450);},50);}
   state.currentTab=tab;
   if(tab==='home')renderDashboard();
   if(tab==='txns')renderTxns();
   if(tab==='goals')renderGoals();
+  if(tab==='ai')renderAI();
 }
 
 // ── ADD TRANSACTION
@@ -855,6 +1031,83 @@ async function confirmReset(){if(!confirm('¿Borrar TODOS los datos? No se puede
 // ── TOAST
 let toastTimer;
 function showToast(msg,type='success'){const el=document.getElementById('toast');el.textContent=msg;el.className='toast '+type+' show';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400);}
+
+// ── NOTIFICACIÓN IN-APP
+let notifTimer;
+function showInAppNotif(msg) {
+  const el=document.getElementById('inapp-notif');
+  document.getElementById('inapp-msg').textContent=msg;
+  el.style.transform='translateY(0)';
+  clearTimeout(notifTimer);
+  notifTimer=setTimeout(()=>{el.style.transform='translateY(-120%)';},4000);
+}
+
+// ── IA CONSEJOS
+function renderAI() {
+  const {income,expense,balance}=calcStats();
+  const i=document.getElementById('ai-stat-income');
+  const e=document.getElementById('ai-stat-expense');
+  const s=document.getElementById('ai-stat-save');
+  if(i)i.textContent=fmt(income);
+  if(e)e.textContent=fmt(expense);
+  if(s)s.textContent=fmt(balance);
+}
+
+let aiMessages=[];
+async function sendAI(){const input=document.getElementById('ai-input');const msg=input.value.trim();if(!msg)return;input.value='';quickAI(msg);}
+
+async function quickAI(msg){
+  const {income,expense,balance}=calcStats();
+  const creditsStr=(state.credits||[]).map(c=>`${c.name}: debe ${fmt(Math.max(c.total-(c.paid||0),0))} (ideal ${fmt(c.ideal)}/mes, mín ${fmt(c.min)}/mes)`).join(', ')||'ninguno';
+  const goalsStr=(state.goals||[]).map(g=>`${g.name}: ${fmt(g.current)} de ${fmt(g.target)}${g.monthly>0?' cuota '+fmt(g.monthly)+'/mes':''}`).join(', ')||'ninguna';
+  const topCats={};
+  state.transactions.filter(t=>t.type==='gasto').forEach(t=>{topCats[t.cat]=(topCats[t.cat]||0)+t.amount;});
+  const catsStr=Object.entries(topCats).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${k}: ${fmt(v)}`).join(', ')||'sin datos';
+
+  aiMessages.push({role:'user',content:msg});
+  renderAIMessages();
+
+  const cont=document.getElementById('ai-messages');
+  const loadId='ai-load-'+Date.now();
+  const loadDiv=document.createElement('div');
+  loadDiv.id=loadId;
+  loadDiv.style.cssText='display:flex;gap:10px;align-items:flex-start';
+  loadDiv.innerHTML=`<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">🎧</div><div style="background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;border-bottom-left-radius:4px;padding:12px 14px;font-size:13px;color:var(--text2)">Analizando tus finanzas...</div>`;
+  cont.appendChild(loadDiv);
+  cont.scrollTop=cont.scrollHeight;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`Eres el asesor financiero personal de Marlon Romero, DJ de 18 años en Ecuador. Responde en español, directo y amigable, sin rodeos ni markdown. Máximo 3 párrafos cortos. Usa los datos reales.\n\nFinanzas este mes:\n- Ingresos: ${fmt(income)}\n- Gastos: ${fmt(expense)}\n- Disponible: ${fmt(balance)}\n- Categorías: ${catsStr}\n- Créditos: ${creditsStr}\n- Metas: ${goalsStr}`,
+        messages:aiMessages
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'No pude generar respuesta.';
+    document.getElementById(loadId)?.remove();
+    aiMessages.push({role:'assistant',content:reply});
+    renderAIMessages();
+  }catch(e){
+    document.getElementById(loadId)?.remove();
+    aiMessages.push({role:'assistant',content:'Error al conectar. Intenta de nuevo.'});
+    renderAIMessages();
+  }
+}
+
+function renderAIMessages(){
+  const cont=document.getElementById('ai-messages');
+  if(!cont)return;
+  cont.innerHTML=aiMessages.map(m=>{
+    if(m.role==='user')return `<div style="display:flex;justify-content:flex-end"><div style="background:linear-gradient(135deg,var(--purple),var(--purple-light));border-radius:16px;border-bottom-right-radius:4px;padding:12px 14px;font-size:13px;max-width:80%">${m.content}</div></div>`;
+    return `<div style="display:flex;gap:10px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">🎧</div><div style="background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;border-bottom-left-radius:4px;padding:12px 14px;font-size:13px;color:var(--text);max-width:85%;line-height:1.5">${m.content}</div></div>`;
+  }).join('');
+  cont.scrollTop=cont.scrollHeight;
+}
 
 // ── INIT
 async function init() {
