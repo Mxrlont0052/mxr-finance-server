@@ -12,12 +12,9 @@
 
 :root {
   --purple: #6a00ff;
-  --purple-mid: #8b2fff;
   --purple-light: #a855f7;
   --purple-glow: #c084fc;
   --bg: #09090e;
-  --bg2: #111118;
-  --bg3: #18181f;
   --glass: rgba(255,255,255,0.04);
   --glass-border: rgba(255,255,255,0.08);
   --glass-purple: rgba(106,0,255,0.18);
@@ -27,1064 +24,503 @@
   --text: #ffffff;
   --text2: rgba(255,255,255,0.55);
   --text3: rgba(255,255,255,0.3);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 
-html, body {
-  height: 100%; width: 100%;
-  background: var(--bg);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--text);
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
+html,body {
+  height:100%; width:100%;
+  background:var(--bg);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  color:var(--text);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
 }
 
-/* ── DEVICE SHELL ── */
 .device {
-  width: 100%; max-width: 390px;
-  height: 100vh; max-height: 844px;
-  margin: 0 auto;
-  background: var(--bg);
-  position: relative;
-  overflow: hidden;
+  width:100%; max-width:390px;
+  height:100%; margin:0 auto;
+  background:var(--bg);
+  position:relative; overflow:hidden;
 }
 
-/* ── BACKGROUND GLOWS ── */
-.glows {
-  position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  overflow: hidden;
-}
-.glow {
-  position: absolute; border-radius: 50%;
-  filter: blur(70px); transition: all 1.2s ease;
-}
+.glows { position:absolute; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.glow { position:absolute; border-radius:50%; filter:blur(70px); }
 .g1 { width:320px;height:320px;background:rgba(106,0,255,0.22);top:-100px;left:-80px; }
 .g2 { width:260px;height:260px;background:rgba(168,85,247,0.11);top:280px;right:-90px; }
 .g3 { width:200px;height:200px;background:rgba(106,0,255,0.09);bottom:180px;left:30px; }
-.g4 { width:180px;height:180px;background:rgba(192,132,252,0.07);bottom:80px;right:20px; }
 
-/* ── SCREENS CONTAINER ── */
-.screens {
-  position: absolute; inset: 0; z-index: 1;
-  overflow: hidden;
-}
+.screens { position:absolute; inset:0; z-index:1; overflow:hidden; }
 
 .screen {
-  position: absolute; inset: 0;
-  overflow-y: auto; overflow-x: hidden;
-  padding-bottom: 110px;
-  opacity: 0;
-  transform: translateX(30px) scale(0.97);
-  pointer-events: none;
-  transition: opacity 0.38s cubic-bezier(.4,0,.2,1),
-              transform 0.38s cubic-bezier(.34,1.1,.64,1);
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  position:absolute; inset:0;
+  overflow-y:auto; overflow-x:hidden;
+  padding-bottom:110px;
+  padding-top:env(safe-area-inset-top, 0px);
+  opacity:0; transform:translateX(30px) scale(0.97);
+  pointer-events:none;
+  transition:opacity 0.38s cubic-bezier(.4,0,.2,1), transform 0.38s cubic-bezier(.34,1.1,.64,1);
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
 }
-.screen::-webkit-scrollbar { display: none; }
-.screen.active {
-  opacity: 1; transform: translateX(0) scale(1);
-  pointer-events: all;
-}
-.screen.exit-left {
-  opacity: 0; transform: translateX(-24px) scale(0.97);
-  pointer-events: none;
-}
+.screen::-webkit-scrollbar { display:none; }
+.screen.active { opacity:1; transform:translateX(0) scale(1); pointer-events:all; }
+.screen.exit-left { opacity:0; transform:translateX(-24px) scale(0.97); pointer-events:none; }
 
-/* STATUS BAR */
-.status-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 24px 6px;
-  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7);
-  position: sticky; top: 0; z-index: 10;
-  background: linear-gradient(to bottom, var(--bg) 60%, transparent);
+/* SYNC STATUS BAR — reemplaza el status bar falso */
+.sync-bar {
+  display:flex; justify-content:center; align-items:center;
+  gap:6px; padding:10px 20px 4px;
+  position:sticky; top:0; z-index:10;
+  background:linear-gradient(to bottom, var(--bg) 60%, transparent);
 }
+.sync-dot {
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  transition:all 0.4s ease; flex-shrink:0;
+}
+.sync-label { font-size:11px; color:rgba(255,255,255,0.35); font-weight:500; cursor:pointer; }
 
 /* HEADER */
-.page-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 4px 20px 14px;
-}
-.page-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-.page-subtitle { font-size: 13px; color: var(--text2); margin-top: 2px; }
+.page-header { display:flex;align-items:center;justify-content:space-between; padding:4px 20px 14px; }
+.page-title { font-size:24px; font-weight:800; letter-spacing:-0.5px; }
+.page-subtitle { font-size:13px; color:var(--text2); margin-top:2px; }
+.logo-svg { width:84px; height:auto; }
+.avatar { width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700; }
+.month-badge { background:rgba(168,85,247,0.14);border:1px solid rgba(168,85,247,0.26);border-radius:100px;padding:4px 11px;font-size:11px;color:rgba(192,132,252,0.9);font-weight:500; }
 
-/* LOGO */
-.logo-svg { width: 84px; height: auto; }
-
-/* AVATAR */
-.avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--purple), var(--purple-light));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700;
-}
-
-/* BADGE */
-.month-badge {
-  background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.26);
-  border-radius: 100px; padding: 4px 11px;
-  font-size: 11px; color: rgba(192,132,252,0.9); font-weight: 500;
-}
-
-/* ─────────────────────────────────────────
-   DASHBOARD
-───────────────────────────────────────── */
+/* BALANCE */
 .balance-card {
-  margin: 0 16px 14px;
-  background: var(--glass-purple);
-  border: 1px solid var(--glass-purple-border);
-  border-radius: 28px; padding: 24px;
-  position: relative; overflow: hidden;
-  cursor: pointer;
+  margin:0 16px 14px;
+  background:var(--glass-purple); border:1px solid var(--glass-purple-border);
+  border-radius:28px; padding:24px; position:relative; overflow:hidden; cursor:pointer;
 }
-.balance-card::before {
-  content:''; position:absolute; top:0;left:0;right:0; height:1px;
-  background: linear-gradient(90deg,transparent,rgba(192,132,252,0.7),transparent);
-}
-.balance-card::after {
-  content:''; position:absolute; inset:0; border-radius:28px;
-  background: radial-gradient(ellipse at 20% 0%, rgba(168,85,247,0.15) 0%, transparent 60%);
-  pointer-events:none;
-}
-.bal-label { font-size:11px; color:rgba(255,255,255,0.4); letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
-.bal-amount {
-  font-size: 46px; font-weight: 800; letter-spacing: -2px; line-height:1;
-  background: linear-gradient(135deg,#fff 10%,#c084fc 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  margin-bottom: 8px;
-}
-.bal-row { display:flex; align-items:center; gap:8px; }
-.trend-chip {
-  background: rgba(74,222,128,0.15); border-radius:100px;
-  padding: 3px 8px; font-size:11px; color:var(--green); font-weight:600;
-}
-.bal-sub { font-size:12px; color:rgba(168,85,247,0.75); }
+.balance-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(192,132,252,0.7),transparent); }
+.bal-label { font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px; }
+.bal-amount { font-size:46px;font-weight:800;letter-spacing:-2px;line-height:1;background:linear-gradient(135deg,#fff 10%,#c084fc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px; }
+.bal-row { display:flex;align-items:center;gap:8px; }
+.trend-chip { background:rgba(74,222,128,0.15);border-radius:100px;padding:3px 8px;font-size:11px;color:var(--green);font-weight:600; }
+.bal-sub { font-size:12px;color:rgba(168,85,247,0.75); }
+.mini-chart { margin-top:16px;height:48px; }
+.mini-chart svg { width:100%;height:100%; }
 
-/* MINI CHART inside balance */
-.mini-chart { margin-top:16px; height:48px; position:relative; }
-.mini-chart svg { width:100%; height:100%; }
-
-/* STAT CARDS */
-.stats-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 16px 14px; }
-.stat-card {
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:22px; padding:16px; cursor:pointer;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), background 0.2s;
-}
-.stat-card:active { transform: scale(0.95); }
-.stat-card.income { border-color: rgba(74,222,128,0.2); }
-.stat-card.expense { border-color: rgba(248,113,113,0.2); }
-.stat-icon {
-  width:32px;height:32px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px; margin-bottom:10px;
-}
-.si-green { background:rgba(74,222,128,0.13); color:var(--green); }
-.si-red { background:rgba(248,113,113,0.13); color:var(--red); }
-.si-purple { background:rgba(168,85,247,0.13); color:var(--purple-glow); }
-.stat-lbl { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.07em; margin-bottom:4px; }
-.stat-val { font-size:22px; font-weight:800; letter-spacing:-0.5px; }
+/* STATS */
+.stats-row { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 14px; }
+.stat-card { background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;padding:16px;cursor:pointer;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.stat-card:active { transform:scale(0.95); }
+.stat-card.income { border-color:rgba(74,222,128,0.2); }
+.stat-card.expense { border-color:rgba(248,113,113,0.2); }
+.stat-icon { width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px; }
+.si-green { background:rgba(74,222,128,0.13);color:var(--green); }
+.si-red { background:rgba(248,113,113,0.13);color:var(--red); }
+.stat-lbl { font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px; }
+.stat-val { font-size:22px;font-weight:800;letter-spacing:-0.5px; }
 .sv-green { color:var(--green); }
 .sv-red { color:var(--red); }
 
-/* SECTION HEADERS */
-.sec-hdr { display:flex; justify-content:space-between; align-items:center; padding:0 20px; margin-bottom:10px; }
-.sec-title { font-size:15px; font-weight:700; }
-.sec-link { font-size:12px; color:var(--purple-light); font-weight:500; cursor:pointer; }
+/* SECTIONS */
+.sec-hdr { display:flex;justify-content:space-between;align-items:center;padding:0 20px;margin-bottom:10px; }
+.sec-title { font-size:15px;font-weight:700; }
+.sec-link { font-size:12px;color:var(--purple-light);font-weight:500;cursor:pointer; }
 
-/* GOAL CARD */
-.goal-card {
-  margin:0 16px 14px;
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:22px; padding:18px; cursor:pointer;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-}
-.goal-card:active { transform: scale(0.98); }
-.goal-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
-.goal-name { font-size:14px; font-weight:700; margin-bottom:3px; }
-.goal-desc { font-size:11px; color:var(--text3); }
-.goal-amt { font-size:13px; font-weight:700; color:var(--purple-glow); }
-.prog-bg { background:rgba(255,255,255,0.07); border-radius:100px; height:6px; overflow:hidden; margin-bottom:7px; }
-.prog-fill {
-  height:100%; border-radius:100px;
-  background: linear-gradient(90deg,var(--purple),var(--purple-glow));
-  transition: width 1s cubic-bezier(.34,1.1,.64,1);
-}
-.goal-ftr { display:flex; justify-content:space-between; }
-.goal-pct { font-size:11px; color:var(--purple-light); font-weight:700; }
-.goal-rem { font-size:11px; color:var(--text3); }
+/* GOAL */
+.goal-card { margin:0 16px 14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;padding:18px;cursor:pointer;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.goal-card:active { transform:scale(0.98); }
+.goal-top { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px; }
+.goal-name { font-size:14px;font-weight:700;margin-bottom:3px; }
+.goal-desc { font-size:11px;color:var(--text3); }
+.goal-amt { font-size:13px;font-weight:700;color:var(--purple-glow); }
+.prog-bg { background:rgba(255,255,255,0.07);border-radius:100px;height:6px;overflow:hidden;margin-bottom:7px; }
+.prog-fill { height:100%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--purple-glow));transition:width 1s cubic-bezier(.34,1.1,.64,1); }
+.goal-ftr { display:flex;justify-content:space-between; }
+.goal-pct { font-size:11px;color:var(--purple-light);font-weight:700; }
+.goal-rem { font-size:11px;color:var(--text3); }
 
-/* TRANSACTION ITEMS */
-.txn-list { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
-.txn-item {
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:18px; padding:14px 15px;
-  display:flex; align-items:center; gap:12px;
-  cursor:pointer;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), background 0.2s;
-}
-.txn-item:active { transform: scale(0.97); background: rgba(255,255,255,0.07); }
-.txn-icon {
-  width:42px;height:42px;border-radius:13px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px; flex-shrink:0;
-}
-.txn-info { flex:1; min-width:0; }
-.txn-name { font-size:14px; font-weight:600; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.txn-cat { font-size:11px; color:var(--text3); }
-.txn-amt { font-size:15px; font-weight:800; flex-shrink:0; }
+/* TXN */
+.txn-list { padding:0 16px;display:flex;flex-direction:column;gap:8px; }
+.txn-item { background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.txn-item:active { transform:scale(0.97); }
+.txn-icon { width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0; }
+.txn-info { flex:1;min-width:0; }
+.txn-name { font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.txn-cat { font-size:11px;color:var(--text3); }
+.txn-amt { font-size:15px;font-weight:800;flex-shrink:0; }
 .ta-pos { color:var(--green); }
 .ta-neg { color:var(--red); }
 
-/* EMPTY STATE */
-.empty-state {
-  text-align:center; padding:60px 40px;
-  display:flex; flex-direction:column; align-items:center; gap:12px;
-}
+/* EMPTY */
+.empty-state { text-align:center;padding:60px 40px;display:flex;flex-direction:column;align-items:center;gap:12px; }
 .empty-icon { font-size:48px; }
-.empty-title { font-size:16px; font-weight:700; }
-.empty-sub { font-size:13px; color:var(--text2); line-height:1.5; }
+.empty-title { font-size:16px;font-weight:700; }
+.empty-sub { font-size:13px;color:var(--text2);line-height:1.5; }
 
-/* ─────────────────────────────────────────
-   TRANSACTIONS SCREEN
-───────────────────────────────────────── */
-.filter-row {
-  display:flex; gap:8px; padding:0 16px 14px; overflow-x:auto;
-  scrollbar-width:none;
-}
+/* FILTERS */
+.filter-row { display:flex;gap:8px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none; }
 .filter-row::-webkit-scrollbar { display:none; }
-.filter-chip {
-  flex-shrink:0; padding:7px 16px; border-radius:100px;
-  background:var(--glass); border:1px solid var(--glass-border);
-  font-size:12px; font-weight:500; color:var(--text2); cursor:pointer;
-  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-  white-space:nowrap;
-}
-.filter-chip.active {
-  background:var(--glass-purple); border-color:var(--glass-purple-border);
-  color:var(--purple-glow);
-}
-.filter-chip:active { transform: scale(0.93); }
+.filter-chip { flex-shrink:0;padding:7px 16px;border-radius:100px;background:var(--glass);border:1px solid var(--glass-border);font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:all 0.25s cubic-bezier(.34,1.56,.64,1);white-space:nowrap; }
+.filter-chip.active { background:var(--glass-purple);border-color:var(--glass-purple-border);color:var(--purple-glow); }
+.txn-group-label { font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:14px 20px 6px; }
 
-.txn-group-label {
-  font-size:11px; font-weight:600; color:var(--text3);
-  text-transform:uppercase; letter-spacing:.08em;
-  padding: 14px 20px 6px;
-}
+/* PARSER */
+.parser-box { margin:0 16px 14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;padding:18px; }
+.parser-box textarea { width:100%;background:transparent;border:none;outline:none;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;resize:none;min-height:80px;line-height:1.6; }
+.parser-box textarea::placeholder { color:var(--text3); }
+.parse-btn { width:100%;padding:12px;border-radius:14px;border:none;margin-top:12px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:transform 0.25s cubic-bezier(.34,1.56,.64,1); }
+.parse-btn:active { transform:scale(0.96); }
+.parse-result { margin-top:12px;padding:12px;border-radius:14px;font-size:13px;font-weight:500;display:none; }
 
-/* ─────────────────────────────────────────
-   ADD SCREEN (modal-style)
-───────────────────────────────────────── */
-.add-screen {
-  position:absolute; inset:0; z-index:20;
-  background: rgba(9,9,14,0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display:flex; align-items:flex-end;
-  opacity:0; pointer-events:none;
-  transition: opacity 0.3s ease;
-}
-.add-screen.open { opacity:1; pointer-events:all; }
+/* ADD SHEET */
+.add-screen { position:absolute;inset:0;z-index:20;background:rgba(9,9,14,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s ease; }
+.add-screen.open { opacity:1;pointer-events:all; }
+.add-sheet { width:100%;background:#14141e;border:1px solid rgba(255,255,255,0.1);border-radius:28px 28px 0 0;padding:12px 20px calc(32px + env(safe-area-inset-bottom, 0px));transform:translateY(100%);transition:transform 0.42s cubic-bezier(.34,1.1,.64,1); }
+.add-screen.open .add-sheet { transform:translateY(0); }
+.sheet-handle { width:40px;height:4px;border-radius:100px;background:rgba(255,255,255,0.15);margin:0 auto 20px; }
+.sheet-title { font-size:18px;font-weight:800;margin-bottom:20px;text-align:center; }
 
-.add-sheet {
-  width:100%;
-  background: #14141e;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 28px 28px 0 0;
-  padding: 12px 20px 32px;
-  transform: translateY(100%);
-  transition: transform 0.42s cubic-bezier(.34,1.1,.64,1);
-}
-.add-screen.open .add-sheet { transform: translateY(0); }
+.type-toggle { display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px;background:var(--glass);border-radius:16px;padding:4px; }
+.type-btn { padding:10px;border-radius:12px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all 0.25s cubic-bezier(.34,1.56,.64,1); }
+.type-btn.active.ingreso { background:rgba(74,222,128,0.2);color:var(--green); }
+.type-btn.active.gasto { background:rgba(248,113,113,0.2);color:var(--red); }
 
-.sheet-handle {
-  width:40px; height:4px; border-radius:100px;
-  background: rgba(255,255,255,0.15);
-  margin: 0 auto 20px;
-}
+.amount-display { text-align:center;margin-bottom:20px; }
+.amount-currency { font-size:28px;font-weight:300;color:var(--text2); }
+.amount-value { font-size:56px;font-weight:800;letter-spacing:-2px;display:inline-block;background:linear-gradient(135deg,#fff,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:20px; }
 
-.sheet-title { font-size:18px; font-weight:800; margin-bottom:20px; text-align:center; }
-
-/* TYPE TOGGLE */
-.type-toggle {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:6px; margin-bottom:20px;
-  background:var(--glass); border-radius:16px; padding:4px;
-}
-.type-btn {
-  padding:10px; border-radius:12px; border:none; background:transparent;
-  font-size:13px; font-weight:600; color:var(--text2); cursor:pointer;
-  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-}
-.type-btn.active.ingreso {
-  background: rgba(74,222,128,0.2); color:var(--green);
-}
-.type-btn.active.gasto {
-  background: rgba(248,113,113,0.2); color:var(--red);
-}
-
-/* AMOUNT INPUT */
-.amount-display {
-  text-align:center; margin-bottom:20px;
-}
-.amount-currency { font-size:28px; font-weight:300; color:var(--text2); }
-.amount-value {
-  font-size:56px; font-weight:800; letter-spacing:-2px; display:inline-block;
-  background: linear-gradient(135deg,#fff,#c084fc);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  min-width:20px;
-}
-
-/* FORM FIELDS */
-.field-group { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
-.field {
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:16px; padding:14px 16px;
-  display:flex; align-items:center; gap:12px;
-}
-.field-icon { font-size:18px; flex-shrink:0; color:var(--text2); }
-.field input, .field select {
-  flex:1; background:transparent; border:none; outline:none;
-  color:var(--text); font-size:14px; font-weight:500;
-  font-family:'Inter',sans-serif;
-}
+.field-group { display:flex;flex-direction:column;gap:10px;margin-bottom:20px; }
+.field { background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px; }
+.field-icon { font-size:18px;flex-shrink:0;color:var(--text2); }
+.field input, .field select { flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:14px;font-weight:500;font-family:'Inter',sans-serif; }
 .field select option { background:#14141e; }
 
-/* NUMPAD */
-.numpad {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
-  margin-bottom:16px;
-}
-.num-btn {
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:14px; padding:16px; text-align:center;
-  font-size:20px; font-weight:600; cursor:pointer;
-  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), background 0.15s;
-}
-.num-btn:active { transform: scale(0.88); background:rgba(255,255,255,0.1); }
+.numpad { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px; }
+.num-btn { background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:16px;text-align:center;font-size:20px;font-weight:600;cursor:pointer;transition:transform 0.2s cubic-bezier(.34,1.56,.64,1); }
+.num-btn:active { transform:scale(0.88);background:rgba(255,255,255,0.1); }
 .num-btn.del { color:var(--red); }
 
-/* BTN PRIMARY */
-.btn-primary {
-  width:100%; padding:17px; border-radius:18px; border:none;
-  background: linear-gradient(135deg,var(--purple),var(--purple-light));
-  color:#fff; font-size:16px; font-weight:700;
-  cursor:pointer; font-family:'Inter',sans-serif;
-  box-shadow: 0 6px 24px rgba(106,0,255,0.4);
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
-}
-.btn-primary:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(106,0,255,0.3); }
+.btn-primary { width:100%;padding:17px;border-radius:18px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 6px 24px rgba(106,0,255,0.4);transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.btn-primary:active { transform:scale(0.96); }
 
-/* PICHINCHA PARSER */
-.parser-box {
-  margin:0 16px 14px;
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:22px; padding:18px;
-}
-.parser-box textarea {
-  width:100%; background:transparent; border:none; outline:none;
-  color:var(--text); font-size:13px; font-family:'Inter',sans-serif;
-  resize:none; min-height:80px; line-height:1.6;
-}
-.parser-box textarea::placeholder { color:var(--text3); }
-.parse-btn {
-  width:100%; padding:12px; border-radius:14px; border:none; margin-top:12px;
-  background: linear-gradient(135deg,var(--purple),var(--purple-light));
-  color:#fff; font-size:13px; font-weight:700;
-  cursor:pointer; font-family:'Inter',sans-serif;
-  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
-}
-.parse-btn:active { transform: scale(0.96); }
-.parse-result {
-  margin-top:12px; padding:12px; border-radius:14px;
-  background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2);
-  font-size:13px; color:var(--green); font-weight:500; display:none;
-}
-
-/* ─────────────────────────────────────────
-   GOALS SCREEN
-───────────────────────────────────────── */
-.goal-big-card {
-  margin:0 16px 12px;
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:22px; padding:20px; cursor:pointer;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-}
-.goal-big-card:active { transform: scale(0.97); }
-.goal-big-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+/* GOALS */
+.goal-big-card { margin:0 16px 12px;background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;padding:20px;cursor:pointer;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.goal-big-card:active { transform:scale(0.97); }
+.goal-big-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px; }
 .goal-emoji { font-size:28px; }
-.goal-badge {
-  font-size:11px; font-weight:700; padding:4px 10px; border-radius:100px;
-  background:rgba(168,85,247,0.15); color:var(--purple-glow);
-}
-.goal-big-name { font-size:16px; font-weight:800; margin-bottom:3px; }
-.goal-big-sub { font-size:12px; color:var(--text2); }
-.goal-big-prog { margin-top:14px; }
-.goal-nums { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.goal-current { font-size:22px; font-weight:800; color:var(--purple-glow); }
-.goal-total { font-size:14px; color:var(--text2); }
+.goal-badge { font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(168,85,247,0.15);color:var(--purple-glow); }
+.goal-big-name { font-size:16px;font-weight:800;margin-bottom:3px; }
+.goal-big-sub { font-size:12px;color:var(--text2); }
+.goal-nums { display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; }
+.goal-current { font-size:22px;font-weight:800;color:var(--purple-glow); }
+.goal-total { font-size:14px;color:var(--text2); }
+.goals-section-lbl { font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:16px 20px 8px;display:flex;align-items:center;gap:8px; }
+.goals-section-lbl span { flex:1;height:1px;background:rgba(255,255,255,0.06);display:inline-block; }
 
-/* ADD GOAL / CREDIT BUTTONS */
-.add-goal-btn {
-  margin:0 16px 14px; padding:16px; border-radius:22px;
-  border:2px dashed rgba(168,85,247,0.3);
-  background:rgba(106,0,255,0.05); cursor:pointer;
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  font-size:14px; font-weight:600; color:var(--purple-light);
-  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-}
-.add-goal-btn:active { transform: scale(0.97); background:rgba(106,0,255,0.1); }
-.add-credit-btn {
-  margin:0 16px 20px; padding:16px; border-radius:22px;
-  border:2px dashed rgba(248,113,113,0.28);
-  background:rgba(248,113,113,0.04); cursor:pointer;
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  font-size:14px; font-weight:600; color:var(--red);
-  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-}
-.add-credit-btn:active { transform: scale(0.97); background:rgba(248,113,113,0.09); }
+.add-goal-btn { margin:0 16px 14px;padding:16px;border-radius:22px;border:2px dashed rgba(168,85,247,0.3);background:rgba(106,0,255,0.05);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;font-weight:600;color:var(--purple-light);transition:all 0.25s cubic-bezier(.34,1.56,.64,1); }
+.add-goal-btn:active { transform:scale(0.97);background:rgba(106,0,255,0.1); }
+.add-credit-btn { margin:0 16px 20px;padding:16px;border-radius:22px;border:2px dashed rgba(248,113,113,0.28);background:rgba(248,113,113,0.04);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;font-weight:600;color:var(--red);transition:all 0.25s cubic-bezier(.34,1.56,.64,1); }
+.add-credit-btn:active { transform:scale(0.97); }
 
-/* CREDIT CARD */
-.credit-card {
-  margin:0 16px 12px;
-  background: rgba(248,113,113,0.06);
-  border:1px solid rgba(248,113,113,0.18);
-  border-radius:22px; padding:20px; cursor:pointer;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-  position:relative; overflow:hidden;
-}
-.credit-card::before {
-  content:''; position:absolute; top:0;left:0;right:0; height:1px;
-  background: linear-gradient(90deg,transparent,rgba(248,113,113,0.45),transparent);
-}
-.credit-card:active { transform: scale(0.97); }
-.credit-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+/* CREDIT */
+.credit-card { margin:0 16px 12px;background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.18);border-radius:22px;padding:20px;cursor:pointer;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden; }
+.credit-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(248,113,113,0.45),transparent); }
+.credit-card:active { transform:scale(0.97); }
+.credit-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px; }
 .credit-emoji { font-size:28px; }
-.credit-badge {
-  font-size:11px; font-weight:700; padding:4px 10px; border-radius:100px;
-  background:rgba(248,113,113,0.15); color:var(--red);
-}
-.credit-badge.done { background:rgba(74,222,128,0.15); color:var(--green); }
-.credit-name { font-size:16px; font-weight:800; margin-bottom:2px; }
-.credit-sub { font-size:12px; color:var(--text2); }
-.credit-prog { margin-top:14px; }
-.credit-nums { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.credit-paid { font-size:22px; font-weight:800; color:var(--red); }
-.credit-total { font-size:14px; color:var(--text2); }
-.credit-bar-bg { background:rgba(255,255,255,0.07); border-radius:100px; height:6px; overflow:hidden; margin-bottom:10px; }
-.credit-bar-fill {
-  height:100%; border-radius:100px;
-  background: linear-gradient(90deg,#f87171,#fca5a5);
-  transition: width 1s cubic-bezier(.34,1.1,.64,1);
-}
-.credit-payments {
-  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;
-}
-.credit-pay-box {
-  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06);
-  border-radius:14px; padding:10px 12px;
-}
-.credit-pay-lbl { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
-.credit-pay-val { font-size:15px; font-weight:800; }
+.credit-badge { font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(248,113,113,0.15);color:var(--red); }
+.credit-badge.done { background:rgba(74,222,128,0.15);color:var(--green); }
+.credit-name { font-size:16px;font-weight:800;margin-bottom:2px; }
+.credit-sub { font-size:12px;color:var(--text2); }
+.credit-nums { display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; }
+.credit-paid { font-size:22px;font-weight:800;color:var(--red); }
+.credit-total { font-size:14px;color:var(--text2); }
+.credit-bar-bg { background:rgba(255,255,255,0.07);border-radius:100px;height:6px;overflow:hidden;margin-bottom:10px; }
+.credit-bar-fill { height:100%;border-radius:100px;background:linear-gradient(90deg,#f87171,#fca5a5);transition:width 1s cubic-bezier(.34,1.1,.64,1); }
+.credit-payments { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px; }
+.credit-pay-box { background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:10px 12px; }
+.credit-pay-lbl { font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px; }
+.credit-pay-val { font-size:15px;font-weight:800; }
 .cpv-ideal { color:#facc15; }
 .cpv-min { color:var(--text2); }
-.credit-ftr { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
-.credit-months { font-size:11px; color:var(--text2); }
-.credit-pay-btn {
-  background: linear-gradient(135deg,rgba(248,113,113,0.3),rgba(248,113,113,0.15));
-  border:1px solid rgba(248,113,113,0.3);
-  border-radius:100px; padding:6px 14px;
-  font-size:12px; font-weight:700; color:var(--red); cursor:pointer;
-  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
-}
-.credit-pay-btn:active { transform: scale(0.92); }
+.credit-ftr { display:flex;justify-content:space-between;align-items:center;margin-top:10px; }
+.credit-pay-btn { background:linear-gradient(135deg,rgba(248,113,113,0.3),rgba(248,113,113,0.15));border:1px solid rgba(248,113,113,0.3);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;transition:transform 0.25s cubic-bezier(.34,1.56,.64,1); }
+.credit-pay-btn:active { transform:scale(0.92); }
 
-/* SECTION DIVIDER for goals page */
-.goals-section-lbl {
-  font-size:11px; font-weight:700; color:var(--text3);
-  text-transform:uppercase; letter-spacing:.1em;
-  padding: 16px 20px 8px;
-  display:flex; align-items:center; gap:8px;
-}
-.goals-section-lbl span { flex:1; height:1px; background:rgba(255,255,255,0.06); display:inline-block; }
-
-/* ─────────────────────────────────────────
-   SETTINGS SCREEN
-───────────────────────────────────────── */
+/* SETTINGS */
 .settings-section { margin:0 16px 20px; }
-.settings-label {
-  font-size:11px; font-weight:700; color:var(--text3);
-  text-transform:uppercase; letter-spacing:.1em;
-  margin-bottom:8px; padding-left:4px;
-}
-.settings-group {
-  background:var(--glass); border:1px solid var(--glass-border);
-  border-radius:22px; overflow:hidden;
-}
-.settings-row {
-  display:flex; align-items:center; gap:14px;
-  padding:15px 18px; cursor:pointer;
-  transition: background 0.2s;
-  border-bottom: 1px solid var(--glass-border);
-}
+.settings-label { font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;padding-left:4px; }
+.settings-group { background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;overflow:hidden; }
+.settings-row { display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;transition:background 0.2s;border-bottom:1px solid var(--glass-border); }
 .settings-row:last-child { border-bottom:none; }
 .settings-row:active { background:rgba(255,255,255,0.06); }
-.settings-row-icon {
-  width:34px;height:34px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px; flex-shrink:0;
-}
-.sri-purple { background:rgba(168,85,247,0.15); color:var(--purple-glow); }
-.sri-blue { background:rgba(59,130,246,0.15); color:#60a5fa; }
-.sri-green { background:rgba(74,222,128,0.15); color:var(--green); }
-.sri-red { background:rgba(248,113,113,0.15); color:var(--red); }
+.settings-row-icon { width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0; }
+.sri-purple { background:rgba(168,85,247,0.15);color:var(--purple-glow); }
+.sri-blue { background:rgba(59,130,246,0.15);color:#60a5fa; }
+.sri-green { background:rgba(74,222,128,0.15);color:var(--green); }
+.sri-red { background:rgba(248,113,113,0.15);color:var(--red); }
 .settings-row-text { flex:1; }
-.srt-title { font-size:14px; font-weight:500; }
-.srt-sub { font-size:11px; color:var(--text3); margin-top:1px; }
-.settings-row-arrow { color:var(--text3); font-size:18px; }
+.srt-title { font-size:14px;font-weight:500; }
+.srt-sub { font-size:11px;color:var(--text3);margin-top:1px; }
+.settings-row-arrow { color:var(--text3);font-size:18px; }
+.toggle { width:44px;height:26px;border-radius:100px;background:var(--glass);border:1px solid var(--glass-border);position:relative;cursor:pointer;transition:background 0.3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0; }
+.toggle.on { background:linear-gradient(135deg,var(--purple),var(--purple-light));border-color:transparent; }
+.toggle::after { content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 4px rgba(0,0,0,0.4); }
+.toggle.on::after { transform:translateX(18px); }
+.profile-card { margin:0 16px 20px;background:var(--glass-purple);border:1px solid var(--glass-purple-border);border-radius:22px;padding:20px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden; }
+.profile-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(192,132,252,0.5),transparent); }
+.profile-avatar { width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0; }
+.profile-name { font-size:18px;font-weight:800;letter-spacing:-.3px; }
+.profile-role { font-size:12px;color:var(--purple-glow);font-weight:500;margin-top:2px; }
 
-/* TOGGLE SWITCH */
-.toggle {
-  width:44px; height:26px; border-radius:100px;
-  background:var(--glass); border:1px solid var(--glass-border);
-  position:relative; cursor:pointer;
-  transition: background 0.3s cubic-bezier(.34,1.56,.64,1);
-  flex-shrink:0;
-}
-.toggle.on { background: linear-gradient(135deg,var(--purple),var(--purple-light)); border-color:transparent; }
-.toggle::after {
-  content:''; position:absolute; top:2px; left:2px;
-  width:20px; height:20px; border-radius:50%; background:#fff;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-}
-.toggle.on::after { transform: translateX(18px); }
-
-/* ─────────────────────────────────────────
-   iOS 26 FLOATING NAV BAR
-───────────────────────────────────────── */
+/* NAV BAR iOS 26 */
 .nav-bar {
-  position: absolute;
-  bottom: calc(20px + var(--safe-bottom));
-  left: 50%; transform: translateX(-50%);
-  width: calc(100% - 32px);
-  background: rgba(24,24,30,0.85);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255,255,255,0.11);
-  border-radius: 100px;
-  padding: 9px 6px;
-  display: flex; justify-content: space-around; align-items: center;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.07) inset;
-  z-index: 15;
+  position:absolute;
+  bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+  left:50%; transform:translateX(-50%);
+  width:calc(100% - 32px);
+  background:rgba(24,24,30,0.85);
+  backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px);
+  border:1px solid rgba(255,255,255,0.11);
+  border-radius:100px; padding:9px 6px;
+  display:flex; justify-content:space-around; align-items:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.07) inset;
+  z-index:15;
 }
-
-.nav-item {
-  display:flex; flex-direction:column; align-items:center; gap:3px;
-  padding:8px 13px; border-radius:100px; cursor:pointer;
-  transition: transform 0.38s cubic-bezier(.34,1.56,.64,1), background 0.22s;
-  position:relative; min-width:52px;
-}
-.nav-item.active {
-  background: rgba(255,255,255,0.11);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset;
-}
-.nav-item i {
-  font-size:22px; color:rgba(255,255,255,0.3);
-  transition: color 0.22s; display:block;
-}
-.nav-item.active i { color:#fff; }
-.nav-label {
-  font-size:10px; font-weight:600; color:rgba(255,255,255,0.28);
-  transition: color 0.22s; line-height:1;
-}
+.nav-item { display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 13px;border-radius:100px;cursor:pointer;transition:transform 0.38s cubic-bezier(.34,1.56,.64,1),background 0.22s;min-width:52px; }
+.nav-item.active { background:rgba(255,255,255,0.11);box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset; }
+.nav-item svg { color:rgba(255,255,255,0.3);transition:color 0.22s; }
+.nav-item.active svg { color:#fff; }
+.nav-label { font-size:10px;font-weight:600;color:rgba(255,255,255,0.28);transition:color 0.22s;line-height:1; }
 .nav-item.active .nav-label { color:rgba(255,255,255,0.85); }
+.nav-plus { width:50px;height:50px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--purple),var(--purple-light));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(106,0,255,0.55);cursor:pointer;transition:transform 0.38s cubic-bezier(.34,1.56,.64,1); }
+.nav-plus:active { transform:scale(0.9); }
 
-.nav-plus {
-  width:50px; height:50px; border-radius:50%; flex-shrink:0;
-  background: linear-gradient(135deg,var(--purple),var(--purple-light));
-  display:flex; align-items:center; justify-content:center;
-  box-shadow: 0 4px 20px rgba(106,0,255,0.55);
-  cursor:pointer;
-  transition: transform 0.38s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
-}
-.nav-plus:active { transform: scale(0.9); box-shadow: 0 2px 8px rgba(106,0,255,0.35); }
-.nav-plus i { font-size:24px; color:#fff; transition: transform 0.38s cubic-bezier(.34,1.56,.64,1); }
-.nav-plus.open i { transform: rotate(45deg); }
+/* TOAST */
+.toast { position:absolute;bottom:110px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(30,30,40,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:50;opacity:0;transition:opacity 0.3s,transform 0.4s cubic-bezier(.34,1.4,.64,1);pointer-events:none; }
+.toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+.toast.success { border-color:rgba(74,222,128,0.3);color:var(--green); }
+.toast.error { border-color:rgba(248,113,113,0.3);color:var(--red); }
 
-/* ── TOAST ── */
-.toast {
-  position:absolute; bottom:110px; left:50%; transform:translateX(-50%) translateY(10px);
-  background: rgba(30,30,40,0.95); border:1px solid rgba(255,255,255,0.12);
-  border-radius:100px; padding:10px 20px;
-  font-size:13px; font-weight:600; white-space:nowrap;
-  z-index:50; opacity:0;
-  transition: opacity 0.3s, transform 0.4s cubic-bezier(.34,1.4,.64,1);
-  pointer-events:none;
-}
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-.toast.success { border-color:rgba(74,222,128,0.3); color:var(--green); }
-.toast.error { border-color:rgba(248,113,113,0.3); color:var(--red); }
+@keyframes slideUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
+.anim-item { opacity:0;animation:slideUp 0.45s cubic-bezier(.34,1.1,.64,1) forwards; }
 
-/* ── SLIDE-IN ANIMATIONS ── */
-@keyframes slideUp {
-  from { opacity:0; transform:translateY(16px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-.anim-item {
-  opacity:0; animation: slideUp 0.45s cubic-bezier(.34,1.1,.64,1) forwards;
-}
-
-/* ICON LINK */
-.link-icon { display: inline-block; font-size: 14px; vertical-align: -2px; margin-left: 4px; }
-
-/* ─ PROFILE HEADER IN SETTINGS ─ */
-.profile-card {
-  margin:0 16px 20px;
-  background: var(--glass-purple);
-  border: 1px solid var(--glass-purple-border);
-  border-radius:22px; padding:20px;
-  display:flex; align-items:center; gap:16px;
-  position:relative; overflow:hidden;
-}
-.profile-card::before {
-  content:''; position:absolute; top:0;left:0;right:0; height:1px;
-  background: linear-gradient(90deg,transparent,rgba(192,132,252,0.5),transparent);
-}
-.profile-avatar {
-  width:56px;height:56px;border-radius:50%;
-  background: linear-gradient(135deg,var(--purple),var(--purple-light));
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;font-weight:800; flex-shrink:0;
-}
-.profile-name { font-size:18px; font-weight:800; letter-spacing:-.3px; }
-.profile-role { font-size:12px; color:var(--purple-glow); font-weight:500; margin-top:2px; }
+/* LOADING */
+.loading-screen { position:absolute;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity 0.5s ease; }
+.loading-screen.hidden { opacity:0;pointer-events:none; }
+.loading-logo { width:120px;height:auto; }
+.loading-spinner { width:24px;height:24px;border:2px solid rgba(168,85,247,0.2);border-top-color:var(--purple-light);border-radius:50%;animation:spin 0.8s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.loading-text { font-size:13px;color:var(--text3);font-weight:500; }
 </style>
 </head>
 <body>
 <div class="device">
-  <div class="glows">
-    <div class="glow g1"></div>
-    <div class="glow g2"></div>
-    <div class="glow g3"></div>
-    <div class="glow g4"></div>
+  <div class="glows"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loading">
+    <svg class="loading-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228.43 139.06">
+      <path fill="white" d="M58.71,57.59q3.3-3.35,6.61-6.67C78.08,38.08,91.09,25.5,105.05,14c4.08-3.38,8.24-6.67,12.51-9.8A21.21,21.21,0,0,1,130.06,0a15.27,15.27,0,0,1,2,.13c2.2.25,4.07,1.11,4.82,3.34s-.23,4.07-1.79,5.6c-2,1.92-4.07,3.71-6,5.64-9.34,9.2-18.7,18.38-28,27.68A362.34,362.34,0,0,0,75.8,70.88c-1.41,1.75-2.75,3.55-4.27,5.52,1.94-.76,3.65-1.37,5.3-2.09a3.24,3.24,0,0,0,1.29-1.15c3.7-5.29,7.34-10.61,11-15.9a26.08,26.08,0,0,1,2.29-2.75A5.9,5.9,0,0,1,93,53.28c2.1-1.07,4-.2,4.39,2.12a30.52,30.52,0,0,1,.24,5.24c-.06,2.35-.26,4.7-.4,7,0,.5,0,1-.06,1.61l2.68-.22,2.78-10.24a2.09,2.09,0,0,1-2.47-1.5,2.5,2.5,0,0,1,1.41-2.79c1.61-1,3.22-2.4,5-2.72,3.81-.69,7.67-1.71,11.6-1a21,21,0,0,1,5.65,1.71,4.94,4.94,0,0,1,1.6,7.65,15.67,15.67,0,0,1-3.89,3.46c-2.66,1.68-5.47,3.11-8.22,4.64-.41.23-.84.44-1.26.66l10.43,3.69,1.24-2.94c2.53-6.06,5.05-12.12,7.61-18.17a7.43,7.43,0,0,1,1.07-1.71A2.91,2.91,0,0,1,136,49a2.61,2.61,0,0,1,1,3.47c-1.07,2.7-2.2,5.39-3.38,8-2.11,4.77-4.28,9.51-6.42,14.27-.12.25-.22.5-.39.87,2.3-.44,4.5-.92,6.71-1.28a25.2,25.2,0,0,1,4.15-.37A2.19,2.19,0,0,1,140.05,76a2.43,2.43,0,0,1-2.13,2.73,89.26,89.26,0,0,0-13.86,3.58c-2.74.89-4.46-.85-3.84-3.69.15-.69.36-1.37.63-2.39L103.62,73c-.67,2.81-1.3,5.48-1.93,8.14a10.38,10.38,0,0,1-.6,2.17,2,2,0,0,1-2.35,1.24,1.7,1.7,0,0,1-1.28-2.13c.39-2.68.86-5.35,1.3-8,.12-.71.26-1.41.39-2.11-1.8-.13-2.47.4-2.55,2-.15,3.35-.27,6.7-.41,10a2.11,2.11,0,0,1-1.78,2.2c-1.15.07-1.73-.65-2-1.66a6.58,6.58,0,0,1-.25-1.17c-.24-2.69-.46-5.39-.69-8.09,0-.31,0-.62-.09-1.1-3.57,1.12-7.06,2.2-10.52,3.35a2.3,2.3,0,0,0-1,.93c-1.57,2.26-3.07,4.56-4.65,6.81a5,5,0,0,1-1.48,1.52,1.85,1.85,0,0,1-1.62.06,1.71,1.71,0,0,1-.51-1.52,36.62,36.62,0,0,1,1.69-3.93c.29-.6.66-1.17,1-1.76-.85,0-1.81.19-2.39-.17s-.8-1.32-1.22-2.1c-.11.14-.39.43-.61.75-2.51,3.64-5,7.3-7.51,10.93a4.47,4.47,0,0,1-1.26,1.23,1.75,1.75,0,0,1-2.32-.06,2.76,2.76,0,0,1-.58-2.13,10.69,10.69,0,0,1,1.46-3.36c5.53-8.23,10.94-16.54,16.72-24.6C82,52.77,88,45.34,93.7,37.8a1,1,0,0,0,.24-.76c-.49.39-1,.77-1.48,1.17-14.19,11.63-27.66,24.07-41,36.7a11.24,11.24,0,0,1-2.16,1.67c-2.06,1.16-4.14,0-4-2.37a20,20,0,0,1,1-5.27c1.78-5.23,3.72-10.41,5.61-15.61a.65.65,0,0,0,0-.56c-1.4,1.56-2.83,3.1-4.21,4.68C40.37,65.88,33.3,74.51,26.76,83.57,21.87,90.35,17,97.14,13.33,104.72c-.69,1.43-1.24,2.94-1.83,4.42a8.52,8.52,0,0,0-.27,1.28,17.22,17.22,0,0,0,2.75-.34c5.06-1.4,10.12-2.79,15.14-4.33,8.48-2.61,16.9-5.43,25.4-8a70.09,70.09,0,0,1,15.93-3,12.81,12.81,0,0,1,3,.11c1.81.34,2.35,1.78,1.33,3.32-.26.4-.56.77-1.06,1.43C115.34,87.51,157.4,80.8,200.58,83l.09.54a7.35,7.35,0,0,1-1.13.17c-3.67.08-7.34,0-11,.23-6.84.38-13.68.83-20.51,1.39a298.08,298.08,0,0,0-30.62,4.37,472.49,472.49,0,0,0-57.09,14.83c-5.84,1.87-11.63,3.9-17.47,5.76a12,12,0,0,0-4.23,2.82,281.06,281.06,0,0,0-20.73,19.82c-1.25,1.35-2.51,2.67-3.78,4a5.75,5.75,0,0,1-6.94,1.56c-6.27-2.67-13-3-19.63-3.81a19.14,19.14,0,0,1-4.65-1c-3.37-1.28-3.94-5.05-.91-7a74.55,74.55,0,0,1,9.83-5.13c15.3-6.79,31.07-12.33,47-17.56,2.5-.83,4.62-2.85,6.91-4.31l-.16-.37c-.45.07-.89.14-1.32.23-11.36,2.43-22.3,6.29-33.3,9.91-5.82,1.92-11.71,3.64-17.63,5.23a12.79,12.79,0,0,1-5.3,0,3.78,3.78,0,0,1-3-4.57c.62-4.33,2.53-8.21,4.42-12.06,4.78-9.76,10.79-18.77,17.09-27.6A408.69,408.69,0,0,1,59.84,29.78a22.87,22.87,0,0,1,6.44-5.09c1.77-.9,3.65-1.69,5.47-.19,1.28,1.05,1.37,3.28.26,5.58Q66.82,40.84,61.56,51.56c-1,2-2,3.95-3,5.93ZM29.23,131.48l14.05-14.39L16.57,127.56l0,.34A31.42,31.42,0,0,1,29.23,131.48ZM121.65,57a16.7,16.7,0,0,0-2-.74,20.6,20.6,0,0,0-9.11,0,2.52,2.52,0,0,0-2.3,2.06c-.71,2.76-1.67,5.45-2.61,8.45C111.57,64.24,117,61.62,121.65,57ZM91.5,62.53l-.34-.15L84.6,71.63l.18.27,6.42-1.48Z"/>
+      <path fill="white" d="M173.47,59.06c-1.51,5.12-2.94,10-4.39,14.81a10.66,10.66,0,0,1-1,2.31,2.05,2.05,0,0,1-2.43,1.06,1.77,1.77,0,0,1-1.25-2.18c.51-3,1-6,1.69-9,1.24-5.27,2.62-10.51,3.92-15.77.17-.69.21-1.42.43-2.09a2.92,2.92,0,0,1,3.13-2.05c1.27.12,2,1,2.4,2.44.5,1.75,1.14,3.47,1.81,5.17,1.65,4.18,3.36,8.35,5.06,12.51a11,11,0,0,0,.58,1.12c1.26-5,2.49-9.93,3.73-14.85l-1.07,0c-1.84,0-2.67-.72-2.78-2.37a2.74,2.74,0,0,1,2.46-2.87A89.88,89.88,0,0,1,208,46.36c5.18.46,10.34,1.3,15.5,2a11.64,11.64,0,0,1,3,1,3.28,3.28,0,0,1,1.79,4c-.5,1.57-1.85,2.25-3.71,2-6.47-.86-12.95-1.68-19.42-2.5-.36,0-.72,0-1.16,0-.42,1.35-.87,2.66-1.24,4-1.6,5.75-3.17,11.51-4.77,17.26a7.11,7.11,0,0,1-.72,1.88,2,2,0,0,1-2.3,1.09,1.78,1.78,0,0,1-1.25-2.06,43.15,43.15,0,0,1,.55-5.46c1.05-5.67,2.21-11.32,3.34-17l-4.83-.18c-1.65,6.79-3.28,13.47-4.89,20.16a5.47,5.47,0,0,0-.11,1.07,2.85,2.85,0,0,1-2,2.85,3,3,0,0,1-3.64-1,75.88,75.88,0,0,1-3.95-6.67C176.58,65.65,175.13,62.46,173.47,59.06Z"/>
+      <path fill="white" d="M165.55,58.42a23.17,23.17,0,0,1-11.13,18.73,10.68,10.68,0,0,1-8,1.6,8.78,8.78,0,0,1-7.08-7.63A20.05,20.05,0,0,1,146,53c1.14-1,2.4-1.94,3.52-3,.79-.74,1.29-1.86,2.16-2.43a7.94,7.94,0,0,1,6.2-1c4.76,1.06,7.55,4.63,7.77,9.89C165.65,57.07,165.58,57.75,165.55,58.42Zm-4.61.56a25.82,25.82,0,0,0-1.05-4.26,4.26,4.26,0,0,0-5.45-2.37c-1.47.44-3.15.49-3.63,2.4,0,.07-.11.11-.17.17a32.52,32.52,0,0,0-3.12,3.54,18,18,0,0,0-3.38,9.92c0,4.43,3.34,6.86,7.1,5C157,70.5,159.81,65.55,160.94,59Z"/>
+    </svg>
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loading-text">Cargando tus finanzas...</div>
   </div>
 
-  <!-- ═══════════════════════════════════
-       SCREEN: DASHBOARD
-  ═══════════════════════════════════ -->
-  <div class="screen active" id="s-home">
-    <div class="status-bar">
-      <span id="clock">9:41</span>
-      <span style="display:flex;gap:5px;align-items:center;font-size:13px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5a17 17 0 0 1 21 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.5 16.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="4" y="9" width="8" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </div>
-    <div class="page-header">
-      <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228.43 139.06">
-        <path fill="white" d="M58.71,57.59q3.3-3.35,6.61-6.67C78.08,38.08,91.09,25.5,105.05,14c4.08-3.38,8.24-6.67,12.51-9.8A21.21,21.21,0,0,1,130.06,0a15.27,15.27,0,0,1,2,.13c2.2.25,4.07,1.11,4.82,3.34s-.23,4.07-1.79,5.6c-2,1.92-4.07,3.71-6,5.64-9.34,9.2-18.7,18.38-28,27.68A362.34,362.34,0,0,0,75.8,70.88c-1.41,1.75-2.75,3.55-4.27,5.52,1.94-.76,3.65-1.37,5.3-2.09a3.24,3.24,0,0,0,1.29-1.15c3.7-5.29,7.34-10.61,11-15.9a26.08,26.08,0,0,1,2.29-2.75A5.9,5.9,0,0,1,93,53.28c2.1-1.07,4-.2,4.39,2.12a30.52,30.52,0,0,1,.24,5.24c-.06,2.35-.26,4.7-.4,7,0,.5,0,1-.06,1.61l2.68-.22,2.78-10.24a2.09,2.09,0,0,1-2.47-1.5,2.5,2.5,0,0,1,1.41-2.79c1.61-1,3.22-2.4,5-2.72,3.81-.69,7.67-1.71,11.6-1a21,21,0,0,1,5.65,1.71,4.94,4.94,0,0,1,1.6,7.65,15.67,15.67,0,0,1-3.89,3.46c-2.66,1.68-5.47,3.11-8.22,4.64-.41.23-.84.44-1.26.66l10.43,3.69,1.24-2.94c2.53-6.06,5.05-12.12,7.61-18.17a7.43,7.43,0,0,1,1.07-1.71A2.91,2.91,0,0,1,136,49a2.61,2.61,0,0,1,1,3.47c-1.07,2.7-2.2,5.39-3.38,8-2.11,4.77-4.28,9.51-6.42,14.27-.12.25-.22.5-.39.87,2.3-.44,4.5-.92,6.71-1.28a25.2,25.2,0,0,1,4.15-.37A2.19,2.19,0,0,1,140.05,76a2.43,2.43,0,0,1-2.13,2.73,89.26,89.26,0,0,0-13.86,3.58c-2.74.89-4.46-.85-3.84-3.69.15-.69.36-1.37.63-2.39L103.62,73c-.67,2.81-1.3,5.48-1.93,8.14a10.38,10.38,0,0,1-.6,2.17,2,2,0,0,1-2.35,1.24,1.7,1.7,0,0,1-1.28-2.13c.39-2.68.86-5.35,1.3-8,.12-.71.26-1.41.39-2.11-1.8-.13-2.47.4-2.55,2-.15,3.35-.27,6.7-.41,10a2.11,2.11,0,0,1-1.78,2.2c-1.15.07-1.73-.65-2-1.66a6.58,6.58,0,0,1-.25-1.17c-.24-2.69-.46-5.39-.69-8.09,0-.31,0-.62-.09-1.1-3.57,1.12-7.06,2.2-10.52,3.35a2.3,2.3,0,0,0-1,.93c-1.57,2.26-3.07,4.56-4.65,6.81a5,5,0,0,1-1.48,1.52,1.85,1.85,0,0,1-1.62.06,1.71,1.71,0,0,1-.51-1.52,36.62,36.62,0,0,1,1.69-3.93c.29-.6.66-1.17,1-1.76-.85,0-1.81.19-2.39-.17s-.8-1.32-1.22-2.1c-.11.14-.39.43-.61.75-2.51,3.64-5,7.3-7.51,10.93a4.47,4.47,0,0,1-1.26,1.23,1.75,1.75,0,0,1-2.32-.06,2.76,2.76,0,0,1-.58-2.13,10.69,10.69,0,0,1,1.46-3.36c5.53-8.23,10.94-16.54,16.72-24.6C82,52.77,88,45.34,93.7,37.8a1,1,0,0,0,.24-.76c-.49.39-1,.77-1.48,1.17-14.19,11.63-27.66,24.07-41,36.7a11.24,11.24,0,0,1-2.16,1.67c-2.06,1.16-4.14,0-4-2.37a20,20,0,0,1,1-5.27c1.78-5.23,3.72-10.41,5.61-15.61a.65.65,0,0,0,0-.56c-1.4,1.56-2.83,3.1-4.21,4.68C40.37,65.88,33.3,74.51,26.76,83.57,21.87,90.35,17,97.14,13.33,104.72c-.69,1.43-1.24,2.94-1.83,4.42a8.52,8.52,0,0,0-.27,1.28,17.22,17.22,0,0,0,2.75-.34c5.06-1.4,10.12-2.79,15.14-4.33,8.48-2.61,16.9-5.43,25.4-8a70.09,70.09,0,0,1,15.93-3,12.81,12.81,0,0,1,3,.11c1.81.34,2.35,1.78,1.33,3.32-.26.4-.56.77-1.06,1.43C115.34,87.51,157.4,80.8,200.58,83l.09.54a7.35,7.35,0,0,1-1.13.17c-3.67.08-7.34,0-11,.23-6.84.38-13.68.83-20.51,1.39a298.08,298.08,0,0,0-30.62,4.37,472.49,472.49,0,0,0-57.09,14.83c-5.84,1.87-11.63,3.9-17.47,5.76a12,12,0,0,0-4.23,2.82,281.06,281.06,0,0,0-20.73,19.82c-1.25,1.35-2.51,2.67-3.78,4a5.75,5.75,0,0,1-6.94,1.56c-6.27-2.67-13-3-19.63-3.81a19.14,19.14,0,0,1-4.65-1c-3.37-1.28-3.94-5.05-.91-7a74.55,74.55,0,0,1,9.83-5.13c15.3-6.79,31.07-12.33,47-17.56,2.5-.83,4.62-2.85,6.91-4.31l-.16-.37c-.45.07-.89.14-1.32.23-11.36,2.43-22.3,6.29-33.3,9.91-5.82,1.92-11.71,3.64-17.63,5.23a12.79,12.79,0,0,1-5.3,0,3.78,3.78,0,0,1-3-4.57c.62-4.33,2.53-8.21,4.42-12.06,4.78-9.76,10.79-18.77,17.09-27.6A408.69,408.69,0,0,1,59.84,29.78a22.87,22.87,0,0,1,6.44-5.09c1.77-.9,3.65-1.69,5.47-.19,1.28,1.05,1.37,3.28.26,5.58Q66.82,40.84,61.56,51.56c-1,2-2,3.95-3,5.93ZM29.23,131.48l14.05-14.39L16.57,127.56l0,.34A31.42,31.42,0,0,1,29.23,131.48ZM121.65,57a16.7,16.7,0,0,0-2-.74,20.6,20.6,0,0,0-9.11,0,2.52,2.52,0,0,0-2.3,2.06c-.71,2.76-1.67,5.45-2.61,8.45C111.57,64.24,117,61.62,121.65,57ZM91.5,62.53l-.34-.15L84.6,71.63l.18.27,6.42-1.48Z"/>
-        <path fill="white" d="M173.47,59.06c-1.51,5.12-2.94,10-4.39,14.81a10.66,10.66,0,0,1-1,2.31,2.05,2.05,0,0,1-2.43,1.06,1.77,1.77,0,0,1-1.25-2.18c.51-3,1-6,1.69-9,1.24-5.27,2.62-10.51,3.92-15.77.17-.69.21-1.42.43-2.09a2.92,2.92,0,0,1,3.13-2.05c1.27.12,2,1,2.4,2.44.5,1.75,1.14,3.47,1.81,5.17,1.65,4.18,3.36,8.35,5.06,12.51a11,11,0,0,0,.58,1.12c1.26-5,2.49-9.93,3.73-14.85l-1.07,0c-1.84,0-2.67-.72-2.78-2.37a2.74,2.74,0,0,1,2.46-2.87A89.88,89.88,0,0,1,208,46.36c5.18.46,10.34,1.3,15.5,2a11.64,11.64,0,0,1,3,1,3.28,3.28,0,0,1,1.79,4c-.5,1.57-1.85,2.25-3.71,2-6.47-.86-12.95-1.68-19.42-2.5-.36,0-.72,0-1.16,0-.42,1.35-.87,2.66-1.24,4-1.6,5.75-3.17,11.51-4.77,17.26a7.11,7.11,0,0,1-.72,1.88,2,2,0,0,1-2.3,1.09,1.78,1.78,0,0,1-1.25-2.06,43.15,43.15,0,0,1,.55-5.46c1.05-5.67,2.21-11.32,3.34-17l-4.83-.18c-1.65,6.79-3.28,13.47-4.89,20.16a5.47,5.47,0,0,0-.11,1.07,2.85,2.85,0,0,1-2,2.85,3,3,0,0,1-3.64-1,75.88,75.88,0,0,1-3.95-6.67C176.58,65.65,175.13,62.46,173.47,59.06Z"/>
-        <path fill="white" d="M165.55,58.42a23.17,23.17,0,0,1-11.13,18.73,10.68,10.68,0,0,1-8,1.6,8.78,8.78,0,0,1-7.08-7.63A20.05,20.05,0,0,1,146,53c1.14-1,2.4-1.94,3.52-3,.79-.74,1.29-1.86,2.16-2.43a7.94,7.94,0,0,1,6.2-1c4.76,1.06,7.55,4.63,7.77,9.89C165.65,57.07,165.58,57.75,165.55,58.42Zm-4.61.56a25.82,25.82,0,0,0-1.05-4.26,4.26,4.26,0,0,0-5.45-2.37c-1.47.44-3.15.49-3.63,2.4,0,.07-.11.11-.17.17a32.52,32.52,0,0,0-3.12,3.54,18,18,0,0,0-3.38,9.92c0,4.43,3.34,6.86,7.1,5C157,70.5,159.81,65.55,160.94,59Z"/>
-      </svg>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="month-badge" id="month-badge">Junio 2026</span>
-        <div class="avatar">MR</div>
+  <div class="screens">
+    <!-- DASHBOARD -->
+    <div class="screen active" id="s-home">
+      <div class="sync-bar">
+        <div class="sync-dot" id="sync-dot"></div>
+        <span class="sync-label" id="sync-label" onclick="openServerConfig()">Sin servidor</span>
       </div>
-    </div>
-
-    <!-- BALANCE -->
-    <div class="balance-card anim-item" style="animation-delay:.05s">
-      <div class="bal-label">Balance total</div>
-      <div class="bal-amount" id="dash-balance">$0.00</div>
-      <div class="bal-row">
-        <span class="trend-chip" id="dash-trend">↑ 0%</span>
-        <span class="bal-sub">vs. mes anterior</span>
+      <div class="page-header">
+        <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228.43 139.06"><path fill="white" d="M58.71,57.59q3.3-3.35,6.61-6.67C78.08,38.08,91.09,25.5,105.05,14c4.08-3.38,8.24-6.67,12.51-9.8A21.21,21.21,0,0,1,130.06,0a15.27,15.27,0,0,1,2,.13c2.2.25,4.07,1.11,4.82,3.34s-.23,4.07-1.79,5.6c-2,1.92-4.07,3.71-6,5.64-9.34,9.2-18.7,18.38-28,27.68A362.34,362.34,0,0,0,75.8,70.88c-1.41,1.75-2.75,3.55-4.27,5.52,1.94-.76,3.65-1.37,5.3-2.09a3.24,3.24,0,0,0,1.29-1.15c3.7-5.29,7.34-10.61,11-15.9a26.08,26.08,0,0,1,2.29-2.75A5.9,5.9,0,0,1,93,53.28c2.1-1.07,4-.2,4.39,2.12a30.52,30.52,0,0,1,.24,5.24c-.06,2.35-.26,4.7-.4,7,0,.5,0,1-.06,1.61l2.68-.22,2.78-10.24a2.09,2.09,0,0,1-2.47-1.5,2.5,2.5,0,0,1,1.41-2.79c1.61-1,3.22-2.4,5-2.72,3.81-.69,7.67-1.71,11.6-1a21,21,0,0,1,5.65,1.71,4.94,4.94,0,0,1,1.6,7.65,15.67,15.67,0,0,1-3.89,3.46c-2.66,1.68-5.47,3.11-8.22,4.64-.41.23-.84.44-1.26.66l10.43,3.69,1.24-2.94c2.53-6.06,5.05-12.12,7.61-18.17a7.43,7.43,0,0,1,1.07-1.71A2.91,2.91,0,0,1,136,49a2.61,2.61,0,0,1,1,3.47c-1.07,2.7-2.2,5.39-3.38,8-2.11,4.77-4.28,9.51-6.42,14.27-.12.25-.22.5-.39.87,2.3-.44,4.5-.92,6.71-1.28a25.2,25.2,0,0,1,4.15-.37A2.19,2.19,0,0,1,140.05,76a2.43,2.43,0,0,1-2.13,2.73,89.26,89.26,0,0,0-13.86,3.58c-2.74.89-4.46-.85-3.84-3.69.15-.69.36-1.37.63-2.39L103.62,73c-.67,2.81-1.3,5.48-1.93,8.14a10.38,10.38,0,0,1-.6,2.17,2,2,0,0,1-2.35,1.24,1.7,1.7,0,0,1-1.28-2.13c.39-2.68.86-5.35,1.3-8,.12-.71.26-1.41.39-2.11-1.8-.13-2.47.4-2.55,2-.15,3.35-.27,6.7-.41,10a2.11,2.11,0,0,1-1.78,2.2c-1.15.07-1.73-.65-2-1.66a6.58,6.58,0,0,1-.25-1.17c-.24-2.69-.46-5.39-.69-8.09,0-.31,0-.62-.09-1.1-3.57,1.12-7.06,2.2-10.52,3.35a2.3,2.3,0,0,0-1,.93c-1.57,2.26-3.07,4.56-4.65,6.81a5,5,0,0,1-1.48,1.52,1.85,1.85,0,0,1-1.62.06,1.71,1.71,0,0,1-.51-1.52,36.62,36.62,0,0,1,1.69-3.93c.29-.6.66-1.17,1-1.76-.85,0-1.81.19-2.39-.17s-.8-1.32-1.22-2.1c-.11.14-.39.43-.61.75-2.51,3.64-5,7.3-7.51,10.93a4.47,4.47,0,0,1-1.26,1.23,1.75,1.75,0,0,1-2.32-.06,2.76,2.76,0,0,1-.58-2.13,10.69,10.69,0,0,1,1.46-3.36c5.53-8.23,10.94-16.54,16.72-24.6C82,52.77,88,45.34,93.7,37.8a1,1,0,0,0,.24-.76c-.49.39-1,.77-1.48,1.17-14.19,11.63-27.66,24.07-41,36.7a11.24,11.24,0,0,1-2.16,1.67c-2.06,1.16-4.14,0-4-2.37a20,20,0,0,1,1-5.27c1.78-5.23,3.72-10.41,5.61-15.61a.65.65,0,0,0,0-.56c-1.4,1.56-2.83,3.1-4.21,4.68C40.37,65.88,33.3,74.51,26.76,83.57,21.87,90.35,17,97.14,13.33,104.72c-.69,1.43-1.24,2.94-1.83,4.42a8.52,8.52,0,0,0-.27,1.28,17.22,17.22,0,0,0,2.75-.34c5.06-1.4,10.12-2.79,15.14-4.33,8.48-2.61,16.9-5.43,25.4-8a70.09,70.09,0,0,1,15.93-3,12.81,12.81,0,0,1,3,.11c1.81.34,2.35,1.78,1.33,3.32-.26.4-.56.77-1.06,1.43C115.34,87.51,157.4,80.8,200.58,83l.09.54a7.35,7.35,0,0,1-1.13.17c-3.67.08-7.34,0-11,.23-6.84.38-13.68.83-20.51,1.39a298.08,298.08,0,0,0-30.62,4.37,472.49,472.49,0,0,0-57.09,14.83c-5.84,1.87-11.63,3.9-17.47,5.76a12,12,0,0,0-4.23,2.82,281.06,281.06,0,0,0-20.73,19.82c-1.25,1.35-2.51,2.67-3.78,4a5.75,5.75,0,0,1-6.94,1.56c-6.27-2.67-13-3-19.63-3.81a19.14,19.14,0,0,1-4.65-1c-3.37-1.28-3.94-5.05-.91-7a74.55,74.55,0,0,1,9.83-5.13c15.3-6.79,31.07-12.33,47-17.56,2.5-.83,4.62-2.85,6.91-4.31l-.16-.37c-.45.07-.89.14-1.32.23-11.36,2.43-22.3,6.29-33.3,9.91-5.82,1.92-11.71,3.64-17.63,5.23a12.79,12.79,0,0,1-5.3,0,3.78,3.78,0,0,1-3-4.57c.62-4.33,2.53-8.21,4.42-12.06,4.78-9.76,10.79-18.77,17.09-27.6A408.69,408.69,0,0,1,59.84,29.78a22.87,22.87,0,0,1,6.44-5.09c1.77-.9,3.65-1.69,5.47-.19,1.28,1.05,1.37,3.28.26,5.58Q66.82,40.84,61.56,51.56c-1,2-2,3.95-3,5.93ZM29.23,131.48l14.05-14.39L16.57,127.56l0,.34A31.42,31.42,0,0,1,29.23,131.48ZM121.65,57a16.7,16.7,0,0,0-2-.74,20.6,20.6,0,0,0-9.11,0,2.52,2.52,0,0,0-2.3,2.06c-.71,2.76-1.67,5.45-2.61,8.45C111.57,64.24,117,61.62,121.65,57ZM91.5,62.53l-.34-.15L84.6,71.63l.18.27,6.42-1.48Z"/><path fill="white" d="M173.47,59.06c-1.51,5.12-2.94,10-4.39,14.81a10.66,10.66,0,0,1-1,2.31,2.05,2.05,0,0,1-2.43,1.06,1.77,1.77,0,0,1-1.25-2.18c.51-3,1-6,1.69-9,1.24-5.27,2.62-10.51,3.92-15.77.17-.69.21-1.42.43-2.09a2.92,2.92,0,0,1,3.13-2.05c1.27.12,2,1,2.4,2.44.5,1.75,1.14,3.47,1.81,5.17,1.65,4.18,3.36,8.35,5.06,12.51a11,11,0,0,0,.58,1.12c1.26-5,2.49-9.93,3.73-14.85l-1.07,0c-1.84,0-2.67-.72-2.78-2.37a2.74,2.74,0,0,1,2.46-2.87A89.88,89.88,0,0,1,208,46.36c5.18.46,10.34,1.3,15.5,2a11.64,11.64,0,0,1,3,1,3.28,3.28,0,0,1,1.79,4c-.5,1.57-1.85,2.25-3.71,2-6.47-.86-12.95-1.68-19.42-2.5-.36,0-.72,0-1.16,0-.42,1.35-.87,2.66-1.24,4-1.6,5.75-3.17,11.51-4.77,17.26a7.11,7.11,0,0,1-.72,1.88,2,2,0,0,1-2.3,1.09,1.78,1.78,0,0,1-1.25-2.06,43.15,43.15,0,0,1,.55-5.46c1.05-5.67,2.21-11.32,3.34-17l-4.83-.18c-1.65,6.79-3.28,13.47-4.89,20.16a5.47,5.47,0,0,0-.11,1.07,2.85,2.85,0,0,1-2,2.85,3,3,0,0,1-3.64-1,75.88,75.88,0,0,1-3.95-6.67C176.58,65.65,175.13,62.46,173.47,59.06Z"/><path fill="white" d="M165.55,58.42a23.17,23.17,0,0,1-11.13,18.73,10.68,10.68,0,0,1-8,1.6,8.78,8.78,0,0,1-7.08-7.63A20.05,20.05,0,0,1,146,53c1.14-1,2.4-1.94,3.52-3,.79-.74,1.29-1.86,2.16-2.43a7.94,7.94,0,0,1,6.2-1c4.76,1.06,7.55,4.63,7.77,9.89C165.65,57.07,165.58,57.75,165.55,58.42Zm-4.61.56a25.82,25.82,0,0,0-1.05-4.26,4.26,4.26,0,0,0-5.45-2.37c-1.47.44-3.15.49-3.63,2.4,0,.07-.11.11-.17.17a32.52,32.52,0,0,0-3.12,3.54,18,18,0,0,0-3.38,9.92c0,4.43,3.34,6.86,7.1,5C157,70.5,159.81,65.55,160.94,59Z"/></svg>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="month-badge" id="month-badge">Junio 2026</span>
+          <div class="avatar">MR</div>
+        </div>
       </div>
-      <div class="mini-chart">
-        <svg id="mini-chart-svg" viewBox="0 0 300 48" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.4"/>
-              <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <path id="chart-area" fill="url(#chartGrad)"/>
-          <path id="chart-line" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+      <div class="balance-card anim-item" style="animation-delay:.05s">
+        <div class="bal-label">Balance total</div>
+        <div class="bal-amount" id="dash-balance">$0.00</div>
+        <div class="bal-row">
+          <span class="trend-chip" id="dash-trend">↑ 0%</span>
+          <span class="bal-sub">vs. mes anterior</span>
+        </div>
+        <div class="mini-chart"><svg id="mini-chart-svg" viewBox="0 0 300 48" preserveAspectRatio="none"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a855f7" stop-opacity="0.4"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs><path id="chart-area" fill="url(#cg)"/><path id="chart-line" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/></svg></div>
       </div>
-    </div>
-
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat-card income anim-item" style="animation-delay:.12s">
-        <div class="stat-icon si-green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
-        <div class="stat-lbl">Ingresos</div>
-        <div class="stat-val sv-green" id="dash-income">$0</div>
+      <div class="stats-row">
+        <div class="stat-card income anim-item" style="animation-delay:.12s">
+          <div class="stat-icon si-green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+          <div class="stat-lbl">Ingresos</div>
+          <div class="stat-val sv-green" id="dash-income">$0</div>
+        </div>
+        <div class="stat-card expense anim-item" style="animation-delay:.18s">
+          <div class="stat-icon si-red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></div>
+          <div class="stat-lbl">Gastos</div>
+          <div class="stat-val sv-red" id="dash-expense">$0</div>
+        </div>
       </div>
-      <div class="stat-card expense anim-item" style="animation-delay:.18s">
-        <div class="stat-icon si-red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></div>
-        <div class="stat-lbl">Gastos</div>
-        <div class="stat-val sv-red" id="dash-expense">$0</div>
+      <div class="sec-hdr anim-item" style="animation-delay:.22s"><span class="sec-title">Meta principal</span><span class="sec-link" onclick="goTo('goals')">Ver todas</span></div>
+      <div id="dash-goal-wrap" class="anim-item" style="animation-delay:.26s"></div>
+      <div class="sec-hdr anim-item" style="animation-delay:.30s"><span class="sec-title">Recientes</span><span class="sec-link" onclick="goTo('txns')">Ver todas</span></div>
+      <div class="txn-list anim-item" id="dash-txns" style="animation-delay:.34s"></div>
+    </div>
+
+    <!-- MOVIMIENTOS -->
+    <div class="screen" id="s-txns">
+      <div class="sync-bar"><div class="sync-dot" id="sync-dot2"></div><span class="sync-label" id="sync-label2" onclick="openServerConfig()">Sin servidor</span></div>
+      <div class="page-header" style="padding-bottom:6px"><div><div class="page-title">Movimientos</div><div class="page-subtitle" id="txns-subtitle">Este mes</div></div></div>
+      <div class="sec-hdr" style="margin-top:4px"><span class="sec-title" style="font-size:13px">📧 Importar correo DeUna</span></div>
+      <div class="parser-box">
+        <textarea id="parser-input" placeholder="Pega aquí el texto del correo de DeUna..."></textarea>
+        <button class="parse-btn" onclick="parseEmail()">✨ Detectar transacción</button>
+        <div class="parse-result" id="parse-result"></div>
       </div>
-    </div>
-
-    <!-- GOAL PREVIEW -->
-    <div class="sec-hdr anim-item" style="animation-delay:.22s">
-      <span class="sec-title">Meta principal</span>
-      <span class="sec-link" onclick="goTo('goals')">Ver todas</span>
-    </div>
-    <div id="dash-goal-wrap" class="anim-item" style="animation-delay:.26s"></div>
-
-    <!-- RECENT TXN -->
-    <div class="sec-hdr anim-item" style="animation-delay:.30s">
-      <span class="sec-title">Recientes</span>
-      <span class="sec-link" onclick="goTo('txns')">Ver todas</span>
-    </div>
-    <div class="txn-list anim-item" id="dash-txns" style="animation-delay:.34s"></div>
-  </div>
-
-  <!-- ═══════════════════════════════════
-       SCREEN: TRANSACCIONES
-  ═══════════════════════════════════ -->
-  <div class="screen" id="s-txns">
-    <div class="status-bar">
-      <span id="clock2">9:41</span>
-      <span style="display:flex;gap:5px;align-items:center;font-size:13px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5a17 17 0 0 1 21 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.5 16.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="4" y="9" width="8" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </div>
-    <div class="page-header" style="padding-bottom:6px">
-      <div>
-        <div class="page-title">Movimientos</div>
-        <div class="page-subtitle" id="txns-subtitle">Este mes</div>
+      <div class="filter-row">
+        <div class="filter-chip active" onclick="filterTxns('all',this)">Todas</div>
+        <div class="filter-chip" onclick="filterTxns('ingreso',this)">Ingresos</div>
+        <div class="filter-chip" onclick="filterTxns('gasto',this)">Gastos</div>
+        <div class="filter-chip" onclick="filterTxns('comida',this)">Comida</div>
+        <div class="filter-chip" onclick="filterTxns('transporte',this)">Transporte</div>
       </div>
+      <div id="txns-list"></div>
     </div>
 
-    <!-- PARSER PICHINCHA -->
-    <div class="sec-hdr" style="margin-top:4px">
-      <span class="sec-title" style="font-size:13px">📧 Importar correo Pichincha</span>
-    </div>
-    <div class="parser-box">
-      <textarea id="parser-input" placeholder="Pega aquí el texto del correo de Banco Pichincha y detectamos el monto automáticamente..."></textarea>
-      <button class="parse-btn" onclick="parseEmail()">
-        <svg style="margin-right:6px" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M5 3l.8 2.2L8 6l-2.2.8L5 9l-.8-2.2L2 6l2.2-.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Detectar transacción
-      </button>
-      <div class="parse-result" id="parse-result"></div>
-    </div>
-
-    <!-- FILTERS -->
-    <div class="filter-row">
-      <div class="filter-chip active" onclick="filterTxns('all',this)">Todas</div>
-      <div class="filter-chip" onclick="filterTxns('ingreso',this)">Ingresos</div>
-      <div class="filter-chip" onclick="filterTxns('gasto',this)">Gastos</div>
-      <div class="filter-chip" onclick="filterTxns('comida',this)">Comida</div>
-      <div class="filter-chip" onclick="filterTxns('transporte',this)">Transporte</div>
+    <!-- METAS -->
+    <div class="screen" id="s-goals">
+      <div class="sync-bar"><div class="sync-dot" id="sync-dot3"></div><span class="sync-label" id="sync-label3" onclick="openServerConfig()">Sin servidor</span></div>
+      <div class="page-header"><div><div class="page-title">Metas</div><div class="page-subtitle">Tu progreso</div></div></div>
+      <div class="goals-section-lbl">🎯 Metas de ahorro <span></span></div>
+      <div id="goals-list"></div>
+      <div class="add-goal-btn" onclick="openAddGoal()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nueva meta de ahorro</span></div>
+      <div class="goals-section-lbl">💳 Créditos y deudas <span></span></div>
+      <div id="credits-list"></div>
+      <div class="add-credit-btn" onclick="openAddCredit()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Agregar crédito o deuda</span></div>
     </div>
 
-    <div id="txns-list"></div>
-  </div>
-
-  <!-- ═══════════════════════════════════
-       SCREEN: METAS
-  ═══════════════════════════════════ -->
-  <div class="screen" id="s-goals">
-    <div class="status-bar">
-      <span id="clock3">9:41</span>
-      <span style="display:flex;gap:5px;align-items:center;font-size:13px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5a17 17 0 0 1 21 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.5 16.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="4" y="9" width="8" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </div>
-    <div class="page-header">
-      <div>
-        <div class="page-title">Metas</div>
-        <div class="page-subtitle">Tu progreso de ahorro</div>
+    <!-- AJUSTES -->
+    <div class="screen" id="s-settings">
+      <div class="sync-bar"><div class="sync-dot" id="sync-dot4"></div><span class="sync-label" id="sync-label4" onclick="openServerConfig()">Sin servidor</span></div>
+      <div class="page-header"><div class="page-title">Ajustes</div></div>
+      <div class="profile-card"><div class="profile-avatar">MR</div><div><div class="profile-name">Marlon Romero</div><div class="profile-role">DJ · MXR Finance</div></div></div>
+      <div class="settings-section">
+        <div class="settings-label">Conexión</div>
+        <div class="settings-group">
+          <div class="settings-row" onclick="openServerConfig()">
+            <div class="settings-row-icon sri-purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5a17 17 0 0 1 21 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.5 16.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></div>
+            <div class="settings-row-text"><div class="srt-title">Servidor en tiempo real</div><div class="srt-sub" id="server-url-display">No configurado</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="settings-row-arrow"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="goals-section-lbl">🎯 Metas de ahorro <span></span></div>
-    <div id="goals-list"></div>
-    <div class="add-goal-btn" onclick="openAddGoal()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span>Nueva meta de ahorro</span>
-    </div>
-
-    <div class="goals-section-lbl">💳 Créditos y deudas <span></span></div>
-    <div id="credits-list"></div>
-    <div class="add-credit-btn" onclick="openAddCredit()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span>Agregar crédito o deuda</span>
+      <div class="settings-section">
+        <div class="settings-label">Datos</div>
+        <div class="settings-group">
+          <div class="settings-row" onclick="exportData()">
+            <div class="settings-row-icon sri-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+            <div class="settings-row-text"><div class="srt-title">Exportar transacciones</div><div class="srt-sub">Descargar como CSV</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="settings-row-arrow"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="settings-row" onclick="confirmReset()">
+            <div class="settings-row-icon sri-red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
+            <div class="settings-row-text"><div class="srt-title">Borrar todos los datos</div><div class="srt-sub">No se puede deshacer</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="settings-row-arrow"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:20px;font-size:11px;color:var(--text3)">MXR Finance v2.0 · Hecho para Marlon 🎧</div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════
-       SCREEN: AJUSTES
-  ═══════════════════════════════════ -->
-  <div class="screen" id="s-settings">
-    <div class="status-bar">
-      <span id="clock4">9:41</span>
-      <span style="display:flex;gap:5px;align-items:center;font-size:13px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5a17 17 0 0 1 21 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.5 16.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="4" y="9" width="8" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </div>
-    <div class="page-header">
-      <div class="page-title">Ajustes</div>
-    </div>
-
-    <div class="profile-card">
-      <div class="profile-avatar">MR</div>
-      <div>
-        <div class="profile-name">Marlon Romero</div>
-        <div class="profile-role">DJ · MXR Finance</div>
-      </div>
-    </div>
-
-    <div class="settings-section">
-      <div class="settings-label">Cuenta</div>
-      <div class="settings-group">
-        <div class="settings-row">
-          <div class="settings-row-icon sri-purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div class="settings-row-text">
-            <div class="srt-title">Moneda</div>
-            <div class="srt-sub">Dólar USD ($)</div>
-          </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="settings-row">
-          <div class="settings-row-icon sri-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-          <div class="settings-row-text">
-            <div class="srt-title">Inicio de mes</div>
-            <div class="srt-sub">Día 1 de cada mes</div>
-          </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="settings-section">
-      <div class="settings-label">Notificaciones</div>
-      <div class="settings-group">
-        <div class="settings-row">
-          <div class="settings-row-icon sri-green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-          <div class="settings-row-text">
-            <div class="srt-title">Alertas de gastos</div>
-            <div class="srt-sub">Cuando superas el presupuesto</div>
-          </div>
-          <div class="toggle on" id="t1" onclick="toggleSwitch('t1')"></div>
-        </div>
-        <div class="settings-row">
-          <div class="settings-row-icon sri-purple"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg></div>
-          <div class="settings-row-text">
-            <div class="srt-title">Recordatorio de metas</div>
-            <div class="srt-sub">Progreso semanal</div>
-          </div>
-          <div class="toggle" id="t2" onclick="toggleSwitch('t2')"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="settings-section">
-      <div class="settings-label">Datos</div>
-      <div class="settings-group">
-        <div class="settings-row" onclick="exportData()">
-          <div class="settings-row-icon sri-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-          <div class="settings-row-text">
-            <div class="srt-title">Exportar transacciones</div>
-            <div class="srt-sub">Descargar como CSV</div>
-          </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="settings-row" onclick="confirmReset()">
-          <div class="settings-row-icon sri-red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
-          <div class="settings-row-text">
-            <div class="srt-title">Borrar todos los datos</div>
-            <div class="srt-sub">No se puede deshacer</div>
-          </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center;padding:20px;font-size:11px;color:var(--text3)">
-      MXR Finance v1.0 · Hecho para Marlon
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════
-       ADD TRANSACTION SHEET
-  ═══════════════════════════════════ -->
+  <!-- ADD TRANSACTION -->
   <div class="add-screen" id="add-screen" onclick="closeAdd(event)">
     <div class="add-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-title">Nueva transacción</div>
-
       <div class="type-toggle">
-        <button class="type-btn active ingreso" id="btn-ingreso" onclick="setType('ingreso')">
-          <svg style="margin-right:6px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>Ingreso
-        </button>
-        <button class="type-btn gasto" id="btn-gasto" onclick="setType('gasto')">
-          <svg style="margin-right:6px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>Gasto
-        </button>
+        <button class="type-btn active ingreso" id="btn-ingreso" onclick="setType('ingreso')"><span style="margin-right:6px">↓</span>Ingreso</button>
+        <button class="type-btn gasto" id="btn-gasto" onclick="setType('gasto')"><span style="margin-right:6px">↑</span>Gasto</button>
       </div>
-
-      <div class="amount-display">
-        <span class="amount-currency">$</span>
-        <span class="amount-value" id="add-amount-display">0</span>
-      </div>
-
+      <div class="amount-display"><span class="amount-currency">$</span><span class="amount-value" id="add-amount-display">0</span></div>
       <div class="numpad">
-        <div class="num-btn" onclick="numPress('1')">1</div>
-        <div class="num-btn" onclick="numPress('2')">2</div>
-        <div class="num-btn" onclick="numPress('3')">3</div>
-        <div class="num-btn" onclick="numPress('4')">4</div>
-        <div class="num-btn" onclick="numPress('5')">5</div>
-        <div class="num-btn" onclick="numPress('6')">6</div>
-        <div class="num-btn" onclick="numPress('7')">7</div>
-        <div class="num-btn" onclick="numPress('8')">8</div>
-        <div class="num-btn" onclick="numPress('9')">9</div>
-        <div class="num-btn" onclick="numPress('.')">.</div>
-        <div class="num-btn" onclick="numPress('0')">0</div>
-        <div class="num-btn del" onclick="numPress('del')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></div>
+        <div class="num-btn" onclick="numPress('1')">1</div><div class="num-btn" onclick="numPress('2')">2</div><div class="num-btn" onclick="numPress('3')">3</div>
+        <div class="num-btn" onclick="numPress('4')">4</div><div class="num-btn" onclick="numPress('5')">5</div><div class="num-btn" onclick="numPress('6')">6</div>
+        <div class="num-btn" onclick="numPress('7')">7</div><div class="num-btn" onclick="numPress('8')">8</div><div class="num-btn" onclick="numPress('9')">9</div>
+        <div class="num-btn" onclick="numPress('.')">.</div><div class="num-btn" onclick="numPress('0')">0</div>
+        <div class="num-btn del" onclick="numPress('del')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></div>
       </div>
-
       <div class="field-group">
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          <input type="text" id="add-desc" placeholder="Descripción (ej: Uber, Comida...)" maxlength="40">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-          <select id="add-cat">
-            <option value="general">General</option>
-            <option value="comida">Comida / Salidas</option>
-            <option value="transporte">Transporte / Uber</option>
-            <option value="trabajo">Trabajo / DJ</option>
-            <option value="ahorro">Ahorro</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><input type="text" id="add-desc" placeholder="Descripción..." maxlength="40"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><select id="add-cat"><option value="general">General</option><option value="comida">Comida / Salidas</option><option value="transporte">Transporte / Uber</option><option value="trabajo">Trabajo / DJ</option><option value="ahorro">Ahorro</option><option value="otro">Otro</option></select></div>
       </div>
-
-      <button class="btn-primary" onclick="saveTransaction()">
-        <svg style="margin-right:8px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Guardar transacción
-      </button>
+      <button class="btn-primary" onclick="saveTransaction()">✓ Guardar transacción</button>
     </div>
   </div>
 
-  <!-- ADD GOAL SHEET -->
+  <!-- ADD GOAL -->
   <div class="add-screen" id="add-goal-screen" onclick="closeAddGoal(event)">
     <div class="add-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-title">Nueva meta</div>
       <div class="field-group">
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-          <input type="text" id="goal-emoji-input" placeholder="Emoji (ej: 🎧)" maxlength="4" value="🎯">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          <input type="text" id="goal-name-input" placeholder="Nombre de la meta" maxlength="30">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <input type="number" id="goal-target-input" placeholder="Meta total ($)" min="1">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11a7 7 0 0 1-7 7 7 7 0 0 1-7-7 7 7 0 0 1 7-7"/><path d="M19 11V9a2 2 0 0 0-2-2h-1"/><path d="M12 20v2"/><path d="M8 20v2"/><circle cx="16" cy="7" r="2"/></svg>
-          <input type="number" id="goal-current-input" placeholder="Ya tienes ($) - opcional" min="0">
-        </div>
+        <div class="field"><span style="font-size:20px;flex-shrink:0">🎯</span><input type="text" id="goal-emoji-input" placeholder="Emoji" maxlength="4" value="🎯"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><input type="text" id="goal-name-input" placeholder="Nombre de la meta" maxlength="30"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><input type="number" id="goal-target-input" placeholder="Meta total ($)" min="1"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg><input type="number" id="goal-current-input" placeholder="Ya tienes ($)" min="0"></div>
       </div>
-      <button class="btn-primary" onclick="saveGoal()">
-        <svg style="margin-right:8px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Crear meta
-      </button>
+      <button class="btn-primary" onclick="saveGoal()">✓ Crear meta</button>
     </div>
   </div>
 
-  <!-- ADD CREDIT SHEET -->
+  <!-- ADD CREDIT -->
   <div class="add-screen" id="add-credit-screen" onclick="closeAddCredit(event)">
     <div class="add-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-title">Nuevo crédito</div>
       <div class="field-group">
-        <div class="field">
-          <span style="font-size:20px;flex-shrink:0">💳</span>
-          <input type="text" id="credit-emoji-input" placeholder="Emoji (ej: 💻 📱 🛒)" maxlength="4" value="💳">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="field-icon"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          <input type="text" id="credit-name-input" placeholder="Nombre (ej: Macbook, iPhone...)" maxlength="30">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="field-icon"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <input type="number" id="credit-total-input" placeholder="Precio total del crédito ($)" min="1">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="field-icon"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-          <input type="number" id="credit-paid-input" placeholder="Ya pagué ($) — puede ser 0" min="0">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="field-icon"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <input type="number" id="credit-ideal-input" placeholder="Cuota ideal por mes ($)" min="1">
-        </div>
-        <div class="field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="field-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <input type="number" id="credit-min-input" placeholder="Cuota mínima por mes ($)" min="1">
-        </div>
+        <div class="field"><span style="font-size:20px;flex-shrink:0">💳</span><input type="text" id="credit-emoji-input" placeholder="Emoji" maxlength="4" value="💳"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><input type="text" id="credit-name-input" placeholder="Nombre (ej: Macbook)" maxlength="30"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><input type="number" id="credit-total-input" placeholder="Precio total ($)" min="1"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg><input type="number" id="credit-paid-input" placeholder="Ya pagué ($)" min="0"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><input type="number" id="credit-ideal-input" placeholder="Cuota ideal/mes ($)" min="1"></div>
+        <div class="field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="field-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><input type="number" id="credit-min-input" placeholder="Cuota mínima/mes ($)" min="1"></div>
       </div>
-      <button class="btn-primary" style="background:linear-gradient(135deg,#dc2626,#f87171);box-shadow:0 6px 24px rgba(248,113,113,0.35)" onclick="saveCredit()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:-3px"><polyline points="20 6 9 17 4 12"/></svg>
-        Guardar crédito
-      </button>
+      <button class="btn-primary" style="background:linear-gradient(135deg,#dc2626,#f87171);box-shadow:0 6px 24px rgba(248,113,113,0.35)" onclick="saveCredit()">✓ Guardar crédito</button>
     </div>
   </div>
 
-  <!-- PAY CREDIT SHEET -->
+  <!-- PAY CREDIT -->
   <div class="add-screen" id="pay-credit-screen" onclick="closePayCredit(event)">
     <div class="add-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-title" id="pay-credit-title">Registrar pago</div>
       <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px" id="pay-credit-sub"></p>
-      <div class="amount-display">
-        <span class="amount-currency">$</span>
-        <span class="amount-value" id="pay-amount-display">0</span>
-      </div>
+      <div class="amount-display"><span class="amount-currency">$</span><span class="amount-value" id="pay-amount-display">0</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-        <div id="pay-quick-ideal" onclick="setPayQuick('ideal')" style="background:rgba(250,204,21,0.12);border:1px solid rgba(250,204,21,0.25);border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:transform 0.25s cubic-bezier(.34,1.56,.64,1)">
-          <div style="font-size:10px;color:rgba(250,204,21,0.7);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Cuota ideal</div>
+        <div onclick="setPayQuick('ideal')" style="background:rgba(250,204,21,0.12);border:1px solid rgba(250,204,21,0.25);border-radius:14px;padding:12px;text-align:center;cursor:pointer">
+          <div style="font-size:10px;color:rgba(250,204,21,0.7);text-transform:uppercase;margin-bottom:4px">Cuota ideal</div>
           <div id="quick-ideal-val" style="font-size:18px;font-weight:800;color:#facc15">$0</div>
         </div>
-        <div id="pay-quick-min" onclick="setPayQuick('min')" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:transform 0.25s cubic-bezier(.34,1.56,.64,1)">
-          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Cuota mínima</div>
+        <div onclick="setPayQuick('min')" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px;text-align:center;cursor:pointer">
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;margin-bottom:4px">Cuota mínima</div>
           <div id="quick-min-val" style="font-size:18px;font-weight:800;color:var(--text2)">$0</div>
         </div>
       </div>
       <div class="numpad">
-        <div class="num-btn" onclick="payNumPress('1')">1</div>
-        <div class="num-btn" onclick="payNumPress('2')">2</div>
-        <div class="num-btn" onclick="payNumPress('3')">3</div>
-        <div class="num-btn" onclick="payNumPress('4')">4</div>
-        <div class="num-btn" onclick="payNumPress('5')">5</div>
-        <div class="num-btn" onclick="payNumPress('6')">6</div>
-        <div class="num-btn" onclick="payNumPress('7')">7</div>
-        <div class="num-btn" onclick="payNumPress('8')">8</div>
-        <div class="num-btn" onclick="payNumPress('9')">9</div>
-        <div class="num-btn" onclick="payNumPress('.')">.</div>
-        <div class="num-btn" onclick="payNumPress('0')">0</div>
-        <div class="num-btn del" onclick="payNumPress('del')">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
-        </div>
+        <div class="num-btn" onclick="payNumPress('1')">1</div><div class="num-btn" onclick="payNumPress('2')">2</div><div class="num-btn" onclick="payNumPress('3')">3</div>
+        <div class="num-btn" onclick="payNumPress('4')">4</div><div class="num-btn" onclick="payNumPress('5')">5</div><div class="num-btn" onclick="payNumPress('6')">6</div>
+        <div class="num-btn" onclick="payNumPress('7')">7</div><div class="num-btn" onclick="payNumPress('8')">8</div><div class="num-btn" onclick="payNumPress('9')">9</div>
+        <div class="num-btn" onclick="payNumPress('.')">.</div><div class="num-btn" onclick="payNumPress('0')">0</div>
+        <div class="num-btn del" onclick="payNumPress('del')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></div>
       </div>
-      <button class="btn-primary" style="background:linear-gradient(135deg,#dc2626,#f87171);box-shadow:0 6px 24px rgba(248,113,113,0.35)" onclick="savePayment()">
-        Registrar pago
-      </button>
+      <button class="btn-primary" style="background:linear-gradient(135deg,#dc2626,#f87171);box-shadow:0 6px 24px rgba(248,113,113,0.35)" onclick="savePayment()">Registrar pago</button>
     </div>
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <!-- FLOATING NAV BAR -->
+  <!-- NAV BAR iOS 26 -->
   <div class="nav-bar" id="nav-bar">
     <div class="nav-item active" id="nav-home" onclick="goTo('home')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -1095,7 +531,7 @@ html, body {
       <span class="nav-label">Movimientos</span>
     </div>
     <div class="nav-plus" id="nav-plus" onclick="openAdd()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     </div>
     <div class="nav-item" id="nav-goals" onclick="goTo('goals')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
@@ -1108,909 +544,328 @@ html, body {
   </div>
 </div>
 
-<!-- Icons are now inline SVG -->
-
 <script>
-// ──────────────────────────────────────────
-// STATE
-// ──────────────────────────────────────────
-const STORAGE_KEY = 'mxr_finance_v1';
+// ── CONFIG
+const SERVER_URL_KEY = 'mxr_server_url';
+const SECRET = 'mxr2026pichincha';
 
-let state = {
-  transactions: [],
-  goals: [],
-  currentTab: 'home',
-  addType: 'ingreso',
-  addAmount: '',
-  filter: 'all'
-};
+// ── STATE — vacío por defecto, viene del servidor
+let state = { transactions:[], goals:[], credits:[], currentTab:'home', addType:'ingreso', addAmount:'', filter:'all' };
+let serverUrl = localStorage.getItem(SERVER_URL_KEY) || '';
 
-// LOAD
-function loadState() {
+// ── HELPERS
+function fmt(n) { return '$'+(+n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+// ── SERVER SYNC — GUARDAR
+async function pushToServer() {
+  if (!serverUrl) return;
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      state.transactions = parsed.transactions || [];
-      state.goals = parsed.goals || [];
-      state.credits = parsed.credits || [];
+    await fetch(serverUrl+'/data', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-mxr-secret':SECRET},
+      body: JSON.stringify({ transactions:state.transactions, goals:state.goals, credits:state.credits })
+    });
+  } catch(e) { console.warn('Push error:',e.message); }
+}
+
+// ── SERVER SYNC — CARGAR
+async function pullFromServer() {
+  if (!serverUrl) return false;
+  try {
+    const res = await fetch(serverUrl+'/data');
+    if (!res.ok) throw new Error('Server error');
+    const data = await res.json();
+    if (data.ok) {
+      state.transactions = data.transactions || [];
+      state.goals = data.goals || [];
+      state.credits = data.credits || [];
+      return true;
     }
-  } catch(e) {}
-  // Demo data if empty
-  if (state.transactions.length === 0) {
-    const now = new Date();
-    const y = now.getFullYear(), m = now.getMonth();
-    state.transactions = [
-      { id:1, type:'ingreso', amount:600, desc:'Mola Rooftop', cat:'trabajo', date: new Date(y,m,10).toISOString() },
-      { id:2, type:'ingreso', amount:200, desc:'Romo DJ Academy', cat:'trabajo', date: new Date(y,m,8).toISOString() },
-      { id:3, type:'gasto',   amount:18.50, desc:'Restaurante', cat:'comida', date: new Date(y,m,9).toISOString() },
-      { id:4, type:'gasto',   amount:7.20,  desc:'Uber', cat:'transporte', date: new Date(y,m,8).toISOString() },
-      { id:5, type:'gasto',   amount:25,    desc:'Comida con amigos', cat:'comida', date: new Date(y,m,7).toISOString() },
-    ];
-    state.goals = [
-      { id:1, emoji:'🎧', name:'Monitores nuevos', target:300, current:120 },
-    ];
-    state.credits = [
-      { id:2, emoji:'💻', name:'Macbook', total:450, paid:60, ideal:150, min:60, payments:[
-        { amount:60, date: new Date(y,m,5).toISOString() }
-      ]},
-    ];
-    saveState();
-  }
-  if (!state.credits) state.credits = [];
+  } catch(e) { console.warn('Pull error:',e.message); }
+  return false;
 }
 
-function saveState() {
+// ── SYNC STATUS UI
+function setSyncStatus(s) {
+  const configs = {
+    connected:    {color:'#4ade80', text:'En línea'},
+    syncing:      {color:'#facc15', text:'Sincronizando...'},
+    disconnected: {color:'rgba(255,255,255,0.2)', text:'Sin servidor'},
+    error:        {color:'#f87171', text:'Error de conexión'}
+  };
+  const c = configs[s] || configs.disconnected;
+  ['','2','3','4'].forEach(i => {
+    const dot = document.getElementById('sync-dot'+i);
+    const lbl = document.getElementById('sync-label'+i);
+    if(dot) { dot.style.background=c.color; dot.style.boxShadow=s==='connected'?`0 0 6px ${c.color}`:'none'; }
+    if(lbl) lbl.textContent=c.text;
+  });
+  const urlEl = document.getElementById('server-url-display');
+  if(urlEl) urlEl.textContent = serverUrl ? serverUrl.replace('https://','') : 'No configurado — toca para agregar';
+}
+
+// ── POLLING cada 30s para nuevas txns del webhook
+let syncInterval = null;
+async function syncCheck() {
+  if (!serverUrl) return;
+  setSyncStatus('syncing');
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      transactions: state.transactions,
-      goals: state.goals,
-      credits: state.credits || []
-    }));
-  } catch(e) {}
+    const res = await fetch(serverUrl+'/data');
+    const data = await res.json();
+    if (data.ok) {
+      const localIds = new Set(state.transactions.map(t=>String(t.id)));
+      const newTxns = (data.transactions||[]).filter(t=>!localIds.has(String(t.id)));
+      if (newTxns.length > 0) {
+        state.transactions = [...newTxns,...state.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date));
+        renderDashboard();
+        if(state.currentTab==='txns') renderTxns();
+        newTxns.forEach(t=>showToast(`📧 ${t.type==='ingreso'?'+':'−'}${fmt(t.amount)} · ${t.desc}`,'success'));
+      }
+      setSyncStatus('connected');
+    }
+  } catch(e) { setSyncStatus('error'); }
 }
 
-// ──────────────────────────────────────────
-// CALCULATIONS
-// ──────────────────────────────────────────
+function startPolling() {
+  clearInterval(syncInterval);
+  if(serverUrl) syncInterval = setInterval(syncCheck, 30000);
+}
+
+// ── SERVER CONFIG
+function openServerConfig() {
+  const url = prompt('URL de tu servidor Render:\n(ej: https://mxr-finance.onrender.com)', serverUrl);
+  if(url===null) return;
+  const clean = url.trim().replace(/\/$/,'');
+  serverUrl = clean;
+  if(clean) localStorage.setItem(SERVER_URL_KEY, clean);
+  else localStorage.removeItem(SERVER_URL_KEY);
+  init();
+}
+
+// ── CALCULATIONS
 function getMonthTxns() {
   const now = new Date();
-  return state.transactions.filter(t => {
-    const d = new Date(t.date);
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  });
+  return state.transactions.filter(t=>{ const d=new Date(t.date); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); });
 }
-
 function calcStats() {
   const txns = getMonthTxns();
   const income = txns.filter(t=>t.type==='ingreso').reduce((a,t)=>a+t.amount,0);
   const expense = txns.filter(t=>t.type==='gasto').reduce((a,t)=>a+t.amount,0);
-  const balance = income - expense;
-  return { income, expense, balance };
+  return { income, expense, balance: income-expense };
 }
 
-function fmt(n) {
-  return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
-}
-
-// ──────────────────────────────────────────
-// MINI CHART
-// ──────────────────────────────────────────
+// ── MINI CHART
 function buildMiniChart() {
-  const now = new Date();
-  const days = 7;
-  const points = [];
-  for (let i=days-1;i>=0;i--) {
-    const d = new Date(now); d.setDate(d.getDate()-i);
-    const dayTxns = state.transactions.filter(t=>{
-      const td=new Date(t.date);
-      return td.toDateString()===d.toDateString();
-    });
-    const net = dayTxns.reduce((a,t)=>a+(t.type==='ingreso'?t.amount:-t.amount),0);
-    points.push(net);
-  }
-  const max = Math.max(...points, 1);
-  const min = Math.min(...points, 0);
-  const range = max-min || 1;
-  const w=300, h=48, pad=4;
-  const xs = points.map((_,i)=> pad + i*(w-pad*2)/(days-1));
-  const ys = points.map(p=> h-pad - (p-min)/range*(h-pad*2));
-
-  let line='', area='';
-  xs.forEach((x,i)=>{
-    const y=ys[i];
-    if(i===0){line+=`M${x},${y}`;area+=`M${x},${h}`;}
-    else { line+=` L${x},${y}`; }
-    area+=` L${x},${y}`;
-    if(i===xs.length-1) area+=` L${x},${h} Z`;
-  });
+  const now = new Date(), days=7, points=[];
+  for(let i=days-1;i>=0;i--){ const d=new Date(now); d.setDate(d.getDate()-i); const net=state.transactions.filter(t=>new Date(t.date).toDateString()===d.toDateString()).reduce((a,t)=>a+(t.type==='ingreso'?t.amount:-t.amount),0); points.push(net); }
+  const max=Math.max(...points,1),min=Math.min(...points,0),range=max-min||1,w=300,h=48,pad=4;
+  const xs=points.map((_,i)=>pad+i*(w-pad*2)/(days-1)),ys=points.map(p=>h-pad-(p-min)/range*(h-pad*2));
+  let line='',area='';
+  xs.forEach((x,i)=>{ const y=ys[i]; if(i===0){line+=`M${x},${y}`;area+=`M${x},${h}`;}else{line+=` L${x},${y}`;} area+=` L${x},${y}`; if(i===xs.length-1)area+=` L${x},${h} Z`; });
   document.getElementById('chart-line').setAttribute('d',line);
   document.getElementById('chart-area').setAttribute('d',area);
 }
 
-// ──────────────────────────────────────────
-// RENDER DASHBOARD
-// ──────────────────────────────────────────
+// ── RENDER DASHBOARD
 function renderDashboard() {
-  const {income,expense,balance} = calcStats();
-  document.getElementById('dash-balance').textContent = fmt(balance);
-  document.getElementById('dash-income').textContent = fmt(income);
-  document.getElementById('dash-expense').textContent = fmt(expense);
-
-  const pct = income>0 ? Math.round((balance/income)*100) : 0;
-  const trendEl = document.getElementById('dash-trend');
-  trendEl.textContent = (pct>=0?'↑':'↓') + ' ' + Math.abs(pct) + '%';
-  trendEl.style.background = pct>=0 ? 'rgba(74,222,128,0.15)' : 'rgba(248,113,113,0.15)';
-  trendEl.style.color = pct>=0 ? 'var(--green)' : 'var(--red)';
-
+  const {income,expense,balance}=calcStats();
+  document.getElementById('dash-balance').textContent=fmt(balance);
+  document.getElementById('dash-income').textContent=fmt(income);
+  document.getElementById('dash-expense').textContent=fmt(expense);
+  const pct=income>0?Math.round((balance/income)*100):0;
+  const tr=document.getElementById('dash-trend');
+  tr.textContent=(pct>=0?'↑':'↓')+' '+Math.abs(pct)+'%';
+  tr.style.background=pct>=0?'rgba(74,222,128,0.15)':'rgba(248,113,113,0.15)';
+  tr.style.color=pct>=0?'var(--green)':'var(--red)';
   buildMiniChart();
-
+  // Month badge
+  const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const mb=document.getElementById('month-badge'); if(mb) mb.textContent=months[new Date().getMonth()]+' '+new Date().getFullYear();
   // Goal preview
-  const wrap = document.getElementById('dash-goal-wrap');
-  if (state.goals.length > 0) {
-    const g = state.goals[0];
-    const pct = Math.min(Math.round((g.current/g.target)*100),100);
-    wrap.innerHTML = `
-      <div class="goal-card" onclick="goTo('goals')">
-        <div class="goal-top">
-          <div><div class="goal-name">${g.emoji} ${g.name}</div><div class="goal-desc">Meta de ahorro</div></div>
-          <div class="goal-amt">${fmt(g.current)} / ${fmt(g.target)}</div>
-        </div>
-        <div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>
-        <div class="goal-ftr"><span class="goal-pct">${pct}% completado</span><span class="goal-rem">Faltan ${fmt(g.target-g.current)}</span></div>
-      </div>`;
-  } else {
-    wrap.innerHTML = `<div class="goal-card" onclick="goTo('goals')" style="text-align:center;color:var(--text2);font-size:13px">+ Crear primera meta</div>`;
-  }
-
-  // Recent txns (last 3)
-  const recent = [...state.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);
-  const container = document.getElementById('dash-txns');
-  if (recent.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><div class="empty-title">Sin movimientos aún</div><div class="empty-sub">Toca el botón + para agregar tu primera transacción</div></div>`;
-  } else {
-    container.innerHTML = recent.map(t => txnHTML(t)).join('');
-  }
+  const wrap=document.getElementById('dash-goal-wrap');
+  if(state.goals.length>0){ const g=state.goals[0],p=Math.min(Math.round((g.current/g.target)*100),100); wrap.innerHTML=`<div class="goal-card" onclick="goTo('goals')"><div class="goal-top"><div><div class="goal-name">${g.emoji} ${g.name}</div><div class="goal-desc">Meta de ahorro</div></div><div class="goal-amt">${fmt(g.current)} / ${fmt(g.target)}</div></div><div class="prog-bg"><div class="prog-fill" style="width:${p}%"></div></div><div class="goal-ftr"><span class="goal-pct">${p}% completado</span><span class="goal-rem">Faltan ${fmt(g.target-g.current)}</span></div></div>`; }
+  else wrap.innerHTML=`<div class="goal-card" onclick="goTo('goals')" style="text-align:center;color:var(--text2);font-size:13px">+ Crear primera meta</div>`;
+  // Recent txns
+  const recent=[...state.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);
+  const cont=document.getElementById('dash-txns');
+  if(recent.length===0) cont.innerHTML=`<div class="empty-state"><div class="empty-icon">💸</div><div class="empty-title">Sin movimientos</div><div class="empty-sub">Toca + para agregar tu primer movimiento</div></div>`;
+  else cont.innerHTML=recent.map(t=>txnHTML(t)).join('');
 }
 
-// ──────────────────────────────────────────
-// TRANSACTION HTML
-// ──────────────────────────────────────────
-const catIcons = {
-  comida:'🍕', transporte:'🚗', trabajo:'💼', ahorro:'💰', general:'💳', otro:'📦'
-};
-const catColors = {
-  comida:'rgba(248,113,113,0.12)', transporte:'rgba(59,130,246,0.12)',
-  trabajo:'rgba(74,222,128,0.12)', ahorro:'rgba(168,85,247,0.12)',
-  general:'rgba(255,255,255,0.08)', otro:'rgba(255,255,255,0.08)'
-};
-
-function txnHTML(t) {
-  const icon = t.type==='ingreso' ? '💰' : (catIcons[t.cat]||'💳');
-  const bg = t.type==='ingreso' ? 'rgba(74,222,128,0.12)' : (catColors[t.cat]||'rgba(255,255,255,0.08)');
-  const amt = t.type==='ingreso' ? `<span class="ta-pos">+${fmt(t.amount)}</span>` : `<span class="ta-neg">-${fmt(t.amount)}</span>`;
-  const d = new Date(t.date);
-  const dateStr = d.toLocaleDateString('es',{day:'numeric',month:'short'});
-  const catLabel = {comida:'Comida',transporte:'Transporte',trabajo:'Trabajo',ahorro:'Ahorro',general:'General',otro:'Otro'}[t.cat]||t.cat;
-  return `<div class="txn-item" onclick="deleteTxn(${t.id})">
-    <div class="txn-icon" style="background:${bg}">${icon}</div>
-    <div class="txn-info">
-      <div class="txn-name">${t.desc}</div>
-      <div class="txn-cat">${catLabel} · ${dateStr}</div>
-    </div>
-    <div class="txn-amt">${amt}</div>
-  </div>`;
+// ── TXN HTML
+const catIcons={comida:'🍕',transporte:'🚗',trabajo:'💼',ahorro:'💰',general:'💳',otro:'📦',credito:'💳',suscripcion:'📱',salud:'🏥',mercado:'🛒'};
+const catColors={comida:'rgba(248,113,113,0.12)',transporte:'rgba(59,130,246,0.12)',trabajo:'rgba(74,222,128,0.12)',ahorro:'rgba(168,85,247,0.12)',general:'rgba(255,255,255,0.08)',otro:'rgba(255,255,255,0.08)',credito:'rgba(248,113,113,0.12)'};
+function txnHTML(t){
+  const icon=t.type==='ingreso'?'💰':(catIcons[t.cat]||'💳');
+  const bg=t.type==='ingreso'?'rgba(74,222,128,0.12)':(catColors[t.cat]||'rgba(255,255,255,0.08)');
+  const amt=t.type==='ingreso'?`<span class="ta-pos">+${fmt(t.amount)}</span>`:`<span class="ta-neg">-${fmt(t.amount)}</span>`;
+  const dateStr=new Date(t.date).toLocaleDateString('es',{day:'numeric',month:'short'});
+  const catLabel={comida:'Comida',transporte:'Transporte',trabajo:'Trabajo',ahorro:'Ahorro',general:'General',otro:'Otro',credito:'Crédito',suscripcion:'Suscripción',salud:'Salud',mercado:'Mercado'}[t.cat]||t.cat;
+  const src=t.source==='deuna'?' · 📧':'';
+  return `<div class="txn-item" onclick="deleteTxn(${t.id})"><div class="txn-icon" style="background:${bg}">${icon}</div><div class="txn-info"><div class="txn-name">${t.desc}</div><div class="txn-cat">${catLabel}${src} · ${dateStr}</div></div><div class="txn-amt">${amt}</div></div>`;
 }
 
-// ──────────────────────────────────────────
-// RENDER TRANSACTIONS
-// ──────────────────────────────────────────
-let currentFilter = 'all';
-
-function renderTxns() {
-  const {income,expense} = calcStats();
-  document.getElementById('txns-subtitle').textContent =
-    `Ingresos ${fmt(income)} · Gastos ${fmt(expense)}`;
-
-  let txns = [...state.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  if (currentFilter !== 'all') {
-    txns = txns.filter(t => t.type===currentFilter || t.cat===currentFilter);
-  }
-
-  const container = document.getElementById('txns-list');
-  if (txns.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">Sin resultados</div><div class="empty-sub">No hay transacciones en esta categoría</div></div>`;
-    return;
-  }
-
-  // Group by date
-  const groups = {};
-  txns.forEach(t => {
-    const d = new Date(t.date);
-    const key = d.toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(t);
-  });
-
-  let html = '';
-  Object.entries(groups).forEach(([label, list]) => {
-    const cap = label.charAt(0).toUpperCase() + label.slice(1);
-    html += `<div class="txn-group-label">${cap}</div>`;
-    html += `<div class="txn-list" style="margin-bottom:4px">`;
-    list.forEach(t => { html += txnHTML(t); });
-    html += `</div>`;
-  });
-  container.innerHTML = html;
+// ── RENDER TXNS
+let currentFilter='all';
+function renderTxns(){
+  const{income,expense}=calcStats();
+  document.getElementById('txns-subtitle').textContent=`Ingresos ${fmt(income)} · Gastos ${fmt(expense)}`;
+  let txns=[...state.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  if(currentFilter!=='all') txns=txns.filter(t=>t.type===currentFilter||t.cat===currentFilter);
+  const cont=document.getElementById('txns-list');
+  if(txns.length===0){cont.innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">Sin resultados</div><div class="empty-sub">No hay transacciones aquí</div></div>`;return;}
+  const groups={};
+  txns.forEach(t=>{const k=new Date(t.date).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});if(!groups[k])groups[k]=[];groups[k].push(t);});
+  let html='';
+  Object.entries(groups).forEach(([label,list])=>{html+=`<div class="txn-group-label">${label.charAt(0).toUpperCase()+label.slice(1)}</div><div class="txn-list" style="margin-bottom:4px">${list.map(t=>txnHTML(t)).join('')}</div>`;});
+  cont.innerHTML=html;
 }
+function filterTxns(f,el){currentFilter=f;document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderTxns();}
 
-function filterTxns(filter, el) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderTxns();
-}
-
-// ──────────────────────────────────────────
-// RENDER GOALS
-// ──────────────────────────────────────────
-function renderGoals() {
-  const container = document.getElementById('goals-list');
-  if (state.goals.length === 0) {
-    container.innerHTML = `<div class="empty-state" style="padding:30px 40px"><div class="empty-icon">🎯</div><div class="empty-title">Sin metas aún</div><div class="empty-sub">Crea tu primera meta de ahorro</div></div>`;
-  } else {
-    container.innerHTML = state.goals.map((g,i) => {
-      const pct = Math.min(Math.round((g.current/g.target)*100),100);
-      return `<div class="goal-big-card anim-item" style="animation-delay:${0.05+i*0.07}s">
-        <div class="goal-big-top">
-          <div class="goal-emoji">${g.emoji}</div>
-          <div class="goal-badge">${pct}%</div>
-        </div>
-        <div class="goal-big-name">${g.name}</div>
-        <div class="goal-big-sub">Meta de ahorro personal</div>
-        <div class="goal-big-prog">
-          <div class="goal-nums">
-            <span class="goal-current">${fmt(g.current)}</span>
-            <span class="goal-total">de ${fmt(g.target)}</span>
-          </div>
-          <div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>
-          <div class="goal-ftr" style="margin-top:6px">
-            <span class="goal-pct">Faltan ${fmt(g.target-g.current)}</span>
-            <span class="goal-rem" onclick="deleteGoal(${g.id})" style="cursor:pointer;color:var(--red)">Eliminar</span>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-  }
+// ── RENDER GOALS
+function renderGoals(){
+  const cont=document.getElementById('goals-list');
+  if(state.goals.length===0) cont.innerHTML=`<div class="empty-state" style="padding:30px 40px"><div class="empty-icon">🎯</div><div class="empty-title">Sin metas aún</div><div class="empty-sub">Crea tu primera meta de ahorro</div></div>`;
+  else cont.innerHTML=state.goals.map((g,i)=>{const p=Math.min(Math.round((g.current/g.target)*100),100);return `<div class="goal-big-card anim-item" style="animation-delay:${0.05+i*0.07}s"><div class="goal-big-top"><div class="goal-emoji">${g.emoji}</div><div class="goal-badge">${p}%</div></div><div class="goal-big-name">${g.name}</div><div class="goal-big-sub">Meta de ahorro personal</div><div class="goal-big-prog"><div class="goal-nums"><span class="goal-current">${fmt(g.current)}</span><span class="goal-total">de ${fmt(g.target)}</span></div><div class="prog-bg"><div class="prog-fill" style="width:${p}%"></div></div><div class="goal-ftr" style="margin-top:6px"><span class="goal-pct">Faltan ${fmt(g.target-g.current)}</span><span class="goal-rem" onclick="deleteGoal(${g.id})" style="cursor:pointer;color:var(--red)">Eliminar</span></div></div></div>`;}).join('');
   renderCredits();
 }
 
-// ──────────────────────────────────────────
-// NAVIGATION
-// ──────────────────────────────────────────
-const tabs = ['home','txns','goals','settings'];
-
-function goTo(tab) {
-  if (state.currentTab === tab) return;
-
-  const prev = document.getElementById('s-'+state.currentTab);
-  prev.classList.add('exit-left');
-  prev.classList.remove('active');
-  setTimeout(()=>{ prev.classList.remove('exit-left'); }, 400);
-
-  const next = document.getElementById('s-'+tab);
-  next.style.transform = 'translateX(30px) scale(0.97)';
-  next.style.opacity = '0';
-  next.classList.add('active');
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      next.style.transform = '';
-      next.style.opacity = '';
-    });
-  });
-
-  // Update nav
-  tabs.forEach(t => {
-    const el = document.getElementById('nav-'+t);
-    el.classList.toggle('active', t===tab);
-  });
-
-  // Spring on nav item
-  const navEl = document.getElementById('nav-'+tab);
-  if (navEl) {
-    navEl.style.transform = 'scale(0.85)';
-    setTimeout(()=>{
-      navEl.style.transition = 'transform 0.4s cubic-bezier(.34,1.56,.64,1), background 0.22s';
-      navEl.style.transform = 'scale(1)';
-      setTimeout(()=>{ navEl.style.transition = ''; }, 450);
-    }, 50);
-  }
-
-  state.currentTab = tab;
-
-  // Render
-  if (tab==='home') renderDashboard();
-  if (tab==='txns') renderTxns();
-  if (tab==='goals') renderGoals();
-}
-
-// ──────────────────────────────────────────
-// ADD TRANSACTION
-// ──────────────────────────────────────────
-function openAdd() {
-  const scr = document.getElementById('add-screen');
-  const plus = document.getElementById('nav-plus');
-  scr.classList.add('open');
-  plus.classList.add('open');
-  state.addAmount = '';
-  state.addType = 'ingreso';
-  updateAddDisplay();
-  document.getElementById('btn-ingreso').classList.add('active');
-  document.getElementById('btn-gasto').classList.remove('active');
-  document.getElementById('add-desc').value = '';
-  document.getElementById('add-cat').value = 'general';
-}
-
-function closeAdd(e) {
-  if (e.target === document.getElementById('add-screen')) {
-    document.getElementById('add-screen').classList.remove('open');
-    document.getElementById('nav-plus').classList.remove('open');
-  }
-}
-
-function setType(type) {
-  state.addType = type;
-  document.getElementById('btn-ingreso').classList.toggle('active', type==='ingreso');
-  document.getElementById('btn-gasto').classList.toggle('active', type==='gasto');
-}
-
-function numPress(k) {
-  const btn = event.currentTarget;
-  btn.style.transform = 'scale(0.82)';
-  setTimeout(()=>{
-    btn.style.transition = 'transform 0.35s cubic-bezier(.34,1.56,.64,1), background 0.15s';
-    btn.style.transform = 'scale(1)';
-    setTimeout(()=>{ btn.style.transition = ''; }, 400);
-  }, 60);
-
-  if (k === 'del') {
-    state.addAmount = state.addAmount.slice(0,-1);
-  } else if (k === '.') {
-    if (!state.addAmount.includes('.')) state.addAmount += '.';
-  } else {
-    if (state.addAmount.length >= 8) return;
-    state.addAmount += k;
-  }
-  updateAddDisplay();
-}
-
-function updateAddDisplay() {
-  const display = document.getElementById('add-amount-display');
-  display.textContent = state.addAmount || '0';
-}
-
-function saveTransaction() {
-  const amount = parseFloat(state.addAmount);
-  if (!amount || amount <= 0) { showToast('Ingresa un monto válido','error'); return; }
-  const desc = document.getElementById('add-desc').value.trim() || (state.addType==='ingreso'?'Ingreso':'Gasto');
-  const cat = document.getElementById('add-cat').value;
-
-  const txn = {
-    id: Date.now(),
-    type: state.addType,
-    amount, desc, cat,
-    date: new Date().toISOString()
-  };
-  state.transactions.unshift(txn);
-  saveState();
-
-  document.getElementById('add-screen').classList.remove('open');
-  document.getElementById('nav-plus').classList.remove('open');
-  showToast(state.addType==='ingreso'?'✅ Ingreso guardado':'✅ Gasto guardado','success');
-
-  renderDashboard();
-  if (state.currentTab==='txns') renderTxns();
-}
-
-function deleteTxn(id) {
-  if (!confirm('¿Eliminar esta transacción?')) return;
-  state.transactions = state.transactions.filter(t=>t.id!==id);
-  saveState();
-  renderDashboard();
-  if (state.currentTab==='txns') renderTxns();
-  showToast('Transacción eliminada','success');
-}
-
-// ──────────────────────────────────────────
-// GOALS
-// ──────────────────────────────────────────
-function openAddGoal() {
-  document.getElementById('add-goal-screen').classList.add('open');
-  document.getElementById('goal-name-input').value = '';
-  document.getElementById('goal-target-input').value = '';
-  document.getElementById('goal-current-input').value = '';
-  document.getElementById('goal-emoji-input').value = '🎯';
-}
-
-function closeAddGoal(e) {
-  if (e.target === document.getElementById('add-goal-screen')) {
-    document.getElementById('add-goal-screen').classList.remove('open');
-  }
-}
-
-function saveGoal() {
-  const name = document.getElementById('goal-name-input').value.trim();
-  const target = parseFloat(document.getElementById('goal-target-input').value);
-  const current = parseFloat(document.getElementById('goal-current-input').value)||0;
-  const emoji = document.getElementById('goal-emoji-input').value.trim()||'🎯';
-  if (!name) { showToast('Escribe un nombre para la meta','error'); return; }
-  if (!target || target<=0) { showToast('Ingresa un monto válido','error'); return; }
-
-  state.goals.push({ id:Date.now(), emoji, name, target, current });
-  saveState();
-  document.getElementById('add-goal-screen').classList.remove('open');
-  renderGoals();
-  renderDashboard();
-  showToast('✅ Meta creada','success');
-}
-
-function deleteGoal(id) {
-  if (!confirm('¿Eliminar esta meta?')) return;
-  state.goals = state.goals.filter(g=>g.id!==id);
-  saveState();
-  renderGoals();
-  renderDashboard();
-  showToast('Meta eliminada','success');
-}
-
-// ──────────────────────────────────────────
-// CREDITS (DEUDAS)
-// ──────────────────────────────────────────
-function renderCredits() {
-  const container = document.getElementById('credits-list');
-  if (!state.credits || state.credits.length === 0) {
-    container.innerHTML = `<div class="empty-state" style="padding:30px 40px"><div class="empty-icon">💳</div><div class="empty-title">Sin créditos registrados</div><div class="empty-sub">Agrega un crédito para hacer seguimiento de tus pagos</div></div>`;
-    return;
-  }
-  container.innerHTML = state.credits.map((c,i) => {
-    const paid = c.paid || 0;
-    const pct = Math.min(Math.round((paid / c.total) * 100), 100);
-    const remaining = Math.max(c.total - paid, 0);
-    const done = remaining <= 0;
-    const monthsIdeal = c.ideal > 0 ? Math.ceil(remaining / c.ideal) : '—';
-    const monthsMin = c.min > 0 ? Math.ceil(remaining / c.min) : '—';
-    return `<div class="credit-card anim-item" style="animation-delay:${0.05+i*0.07}s">
-      <div class="credit-top">
-        <div class="credit-emoji">${c.emoji}</div>
-        <div class="credit-badge ${done?'done':''}">${done ? '✅ Pagado' : remaining <= 0 ? '✅' : pct+'% pagado'}</div>
-      </div>
-      <div class="credit-name">${c.name}</div>
-      <div class="credit-sub">Crédito · ${done ? 'Completado' : 'En curso'}</div>
-      <div class="credit-prog">
-        <div class="credit-nums">
-          <span class="credit-paid">${fmt(paid)}</span>
-          <span class="credit-total">de ${fmt(c.total)}</span>
-        </div>
-        <div class="credit-bar-bg"><div class="credit-bar-fill" style="width:${pct}%"></div></div>
-        <div class="credit-payments">
-          <div class="credit-pay-box">
-            <div class="credit-pay-lbl">⚡ Cuota ideal</div>
-            <div class="credit-pay-val cpv-ideal">${fmt(c.ideal)}/mes</div>
-          </div>
-          <div class="credit-pay-box">
-            <div class="credit-pay-lbl">📌 Cuota mínima</div>
-            <div class="credit-pay-val cpv-min">${fmt(c.min)}/mes</div>
-          </div>
-        </div>
-        <div class="credit-ftr">
-          <div>
-            <div style="font-size:11px;color:var(--text3)">Faltan <strong style="color:var(--red)">${fmt(remaining)}</strong></div>
-            <div style="font-size:10px;color:var(--text3);margin-top:2px">${done ? '🎉 ¡Crédito saldado!' : `~${monthsIdeal} meses al ideal · ~${monthsMin} al mínimo`}</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            ${!done ? `<div class="credit-pay-btn" onclick="openPayCredit(${c.id})">Pagar</div>` : ''}
-            <div style="font-size:11px;color:var(--red);cursor:pointer" onclick="deleteCredit(${c.id})">Eliminar</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
+// ── RENDER CREDITS
+function renderCredits(){
+  const cont=document.getElementById('credits-list');
+  if(!state.credits||state.credits.length===0){cont.innerHTML=`<div class="empty-state" style="padding:30px 40px"><div class="empty-icon">💳</div><div class="empty-title">Sin créditos</div><div class="empty-sub">Agrega un crédito para hacer seguimiento</div></div>`;return;}
+  cont.innerHTML=state.credits.map((c,i)=>{
+    const paid=c.paid||0,pct=Math.min(Math.round((paid/c.total)*100),100),remaining=Math.max(c.total-paid,0),done=remaining<=0;
+    const mI=c.ideal>0?Math.ceil(remaining/c.ideal):'—',mM=c.min>0?Math.ceil(remaining/c.min):'—';
+    return `<div class="credit-card anim-item" style="animation-delay:${0.05+i*0.07}s"><div class="credit-top"><div class="credit-emoji">${c.emoji}</div><div class="credit-badge ${done?'done':''}">${done?'✅ Pagado':pct+'% pagado'}</div></div><div class="credit-name">${c.name}</div><div class="credit-sub">Crédito · ${done?'Completado':'En curso'}</div><div class="credit-prog"><div class="credit-nums"><span class="credit-paid">${fmt(paid)}</span><span class="credit-total">de ${fmt(c.total)}</span></div><div class="credit-bar-bg"><div class="credit-bar-fill" style="width:${pct}%"></div></div><div class="credit-payments"><div class="credit-pay-box"><div class="credit-pay-lbl">⚡ Cuota ideal</div><div class="credit-pay-val cpv-ideal">${fmt(c.ideal)}/mes</div></div><div class="credit-pay-box"><div class="credit-pay-lbl">📌 Cuota mínima</div><div class="credit-pay-val cpv-min">${fmt(c.min)}/mes</div></div></div><div class="credit-ftr"><div><div style="font-size:11px;color:var(--text3)">Faltan <strong style="color:var(--red)">${fmt(remaining)}</strong></div><div style="font-size:10px;color:var(--text3);margin-top:2px">${done?'🎉 ¡Saldado!':`~${mI} meses al ideal · ~${mM} al mínimo`}</div></div><div style="display:flex;gap:8px;align-items:center">${!done?`<div class="credit-pay-btn" onclick="openPayCredit(${c.id})">Pagar</div>`:''}<div style="font-size:11px;color:var(--red);cursor:pointer" onclick="deleteCredit(${c.id})">Eliminar</div></div></div></div></div>`;
   }).join('');
 }
 
-function openAddCredit() {
-  document.getElementById('add-credit-screen').classList.add('open');
-  document.getElementById('credit-name-input').value = '';
-  document.getElementById('credit-total-input').value = '';
-  document.getElementById('credit-paid-input').value = '';
-  document.getElementById('credit-ideal-input').value = '';
-  document.getElementById('credit-min-input').value = '';
-  document.getElementById('credit-emoji-input').value = '💳';
+// ── NAVIGATION
+const tabs=['home','txns','goals','settings'];
+function goTo(tab){
+  if(state.currentTab===tab)return;
+  const prev=document.getElementById('s-'+state.currentTab);
+  prev.classList.add('exit-left');prev.classList.remove('active');
+  setTimeout(()=>prev.classList.remove('exit-left'),400);
+  const next=document.getElementById('s-'+tab);
+  next.style.transform='translateX(30px) scale(0.97)';next.style.opacity='0';next.classList.add('active');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{next.style.transform='';next.style.opacity='';}));
+  tabs.forEach(t=>{const el=document.getElementById('nav-'+t);el.classList.toggle('active',t===tab);});
+  const navEl=document.getElementById('nav-'+tab);
+  if(navEl){navEl.style.transform='scale(0.85)';setTimeout(()=>{navEl.style.transition='transform 0.4s cubic-bezier(.34,1.56,.64,1),background 0.22s';navEl.style.transform='scale(1)';setTimeout(()=>navEl.style.transition='',450);},50);}
+  state.currentTab=tab;
+  if(tab==='home')renderDashboard();
+  if(tab==='txns')renderTxns();
+  if(tab==='goals')renderGoals();
 }
 
-function closeAddCredit(e) {
-  if (e.target === document.getElementById('add-credit-screen'))
-    document.getElementById('add-credit-screen').classList.remove('open');
-}
-
-function saveCredit() {
-  const name = document.getElementById('credit-name-input').value.trim();
-  const total = parseFloat(document.getElementById('credit-total-input').value);
-  const paid = parseFloat(document.getElementById('credit-paid-input').value) || 0;
-  const ideal = parseFloat(document.getElementById('credit-ideal-input').value) || 0;
-  const min = parseFloat(document.getElementById('credit-min-input').value) || 0;
-  const emoji = document.getElementById('credit-emoji-input').value.trim() || '💳';
-
-  if (!name) { showToast('Escribe un nombre', 'error'); return; }
-  if (!total || total <= 0) { showToast('Ingresa el monto total', 'error'); return; }
-  if (ideal <= 0) { showToast('Ingresa la cuota ideal', 'error'); return; }
-  if (min <= 0) { showToast('Ingresa la cuota mínima', 'error'); return; }
-
-  if (!state.credits) state.credits = [];
-  state.credits.push({ id: Date.now(), emoji, name, total, paid, ideal, min, payments: [] });
-  saveState();
-  document.getElementById('add-credit-screen').classList.remove('open');
-  renderCredits();
-  showToast('✅ Crédito guardado', 'success');
-}
-
-function deleteCredit(id) {
-  if (!confirm('¿Eliminar este crédito?')) return;
-  state.credits = state.credits.filter(c => c.id !== id);
-  saveState();
-  renderCredits();
-  showToast('Crédito eliminado', 'success');
-}
-
-// PAY CREDIT
-let payingCreditId = null;
-let payAmount = '';
-
-function openPayCredit(id) {
-  payingCreditId = id;
-  payAmount = '';
-  const c = state.credits.find(c => c.id === id);
-  document.getElementById('pay-credit-title').textContent = `Pagar — ${c.name}`;
-  const remaining = Math.max(c.total - (c.paid||0), 0);
-  document.getElementById('pay-credit-sub').textContent = `Faltan ${fmt(remaining)} por pagar`;
-  document.getElementById('quick-ideal-val').textContent = fmt(c.ideal);
-  document.getElementById('quick-min-val').textContent = fmt(c.min);
-  document.getElementById('pay-amount-display').textContent = '0';
-  document.getElementById('pay-credit-screen').classList.add('open');
-}
-
-function closePayCredit(e) {
-  if (e.target === document.getElementById('pay-credit-screen'))
-    document.getElementById('pay-credit-screen').classList.remove('open');
-}
-
-function setPayQuick(type) {
-  const c = state.credits.find(c => c.id === payingCreditId);
-  payAmount = String(type === 'ideal' ? c.ideal : c.min);
-  document.getElementById('pay-amount-display').textContent = payAmount;
-  const idealEl = document.getElementById('pay-quick-ideal');
-  const minEl = document.getElementById('pay-quick-min');
-  idealEl.style.transform = type==='ideal' ? 'scale(0.95)' : '';
-  minEl.style.transform = type==='min' ? 'scale(0.95)' : '';
-  setTimeout(() => {
-    idealEl.style.transition = 'transform 0.35s cubic-bezier(.34,1.56,.64,1)';
-    minEl.style.transition = 'transform 0.35s cubic-bezier(.34,1.56,.64,1)';
-    idealEl.style.transform = '';
-    minEl.style.transform = '';
-  }, 60);
-}
-
-function payNumPress(k) {
-  const btn = event.currentTarget;
-  btn.style.transform = 'scale(0.82)';
-  setTimeout(()=>{ btn.style.transition='transform 0.35s cubic-bezier(.34,1.56,.64,1)'; btn.style.transform='scale(1)'; setTimeout(()=>{btn.style.transition='';},400); },60);
-  if (k==='del') payAmount = payAmount.slice(0,-1);
-  else if (k==='.') { if (!payAmount.includes('.')) payAmount+='.'; }
-  else { if (payAmount.length>=8) return; payAmount+=k; }
-  document.getElementById('pay-amount-display').textContent = payAmount || '0';
-}
-
-function savePayment() {
-  const amount = parseFloat(payAmount);
-  if (!amount || amount <= 0) { showToast('Ingresa un monto', 'error'); return; }
-  const c = state.credits.find(c => c.id === payingCreditId);
-  if (!c) return;
-  c.paid = (c.paid || 0) + amount;
-  if (!c.payments) c.payments = [];
-  c.payments.push({ amount, date: new Date().toISOString() });
-
-  // Also log as a gasto transaction
-  state.transactions.unshift({
-    id: Date.now(), type: 'gasto',
-    amount, desc: `Pago crédito: ${c.name}`, cat: 'credito',
-    date: new Date().toISOString()
-  });
-
-  saveState();
-  document.getElementById('pay-credit-screen').classList.remove('open');
-  renderCredits();
+// ── ADD TRANSACTION
+function openAdd(){document.getElementById('add-screen').classList.add('open');document.getElementById('nav-plus').style.transform='rotate(45deg)';state.addAmount='';state.addType='ingreso';updateAddDisplay();document.getElementById('btn-ingreso').classList.add('active');document.getElementById('btn-gasto').classList.remove('active');document.getElementById('add-desc').value='';document.getElementById('add-cat').value='general';}
+function closeAdd(e){if(e.target===document.getElementById('add-screen')){document.getElementById('add-screen').classList.remove('open');document.getElementById('nav-plus').style.transform='';}}
+function setType(t){state.addType=t;document.getElementById('btn-ingreso').classList.toggle('active',t==='ingreso');document.getElementById('btn-gasto').classList.toggle('active',t==='gasto');}
+function numPress(k){const btn=event.currentTarget;btn.style.transform='scale(0.82)';setTimeout(()=>{btn.style.transition='transform 0.35s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';setTimeout(()=>btn.style.transition='',400);},60);if(k==='del')state.addAmount=state.addAmount.slice(0,-1);else if(k==='.'){if(!state.addAmount.includes('.'))state.addAmount+='.';}else{if(state.addAmount.length>=8)return;state.addAmount+=k;}updateAddDisplay();}
+function updateAddDisplay(){document.getElementById('add-amount-display').textContent=state.addAmount||'0';}
+async function saveTransaction(){
+  const amount=parseFloat(state.addAmount);
+  if(!amount||amount<=0){showToast('Ingresa un monto válido','error');return;}
+  const desc=document.getElementById('add-desc').value.trim()||(state.addType==='ingreso'?'Ingreso':'Gasto');
+  const cat=document.getElementById('add-cat').value;
+  const txn={id:Date.now(),type:state.addType,amount,desc,cat,date:new Date().toISOString()};
+  state.transactions.unshift(txn);
+  await pushToServer();
+  document.getElementById('add-screen').classList.remove('open');
+  document.getElementById('nav-plus').style.transform='';
+  showToast(state.addType==='ingreso'?'✅ Ingreso guardado':'✅ Gasto guardado','success');
   renderDashboard();
-  if (state.currentTab==='txns') renderTxns();
-
-  const done = c.paid >= c.total;
-  showToast(done ? `🎉 ¡${c.name} saldado!` : `✅ Pago de ${fmt(amount)} registrado`, 'success');
+  if(state.currentTab==='txns')renderTxns();
+}
+async function deleteTxn(id){
+  if(!confirm('¿Eliminar esta transacción?'))return;
+  state.transactions=state.transactions.filter(t=>t.id!==id);
+  await pushToServer();
+  renderDashboard();
+  if(state.currentTab==='txns')renderTxns();
+  showToast('Eliminado','success');
 }
 
-// ──────────────────────────────────────────
-// PICHINCHA PARSER
-// ──────────────────────────────────────────
-function parseEmail() {
-  const text = document.getElementById('parser-input').value;
-  const resultEl = document.getElementById('parse-result');
+// ── GOALS
+function openAddGoal(){document.getElementById('add-goal-screen').classList.add('open');document.getElementById('goal-name-input').value='';document.getElementById('goal-target-input').value='';document.getElementById('goal-current-input').value='';document.getElementById('goal-emoji-input').value='🎯';}
+function closeAddGoal(e){if(e.target===document.getElementById('add-goal-screen'))document.getElementById('add-goal-screen').classList.remove('open');}
+async function saveGoal(){const name=document.getElementById('goal-name-input').value.trim();const target=parseFloat(document.getElementById('goal-target-input').value);const current=parseFloat(document.getElementById('goal-current-input').value)||0;const emoji=document.getElementById('goal-emoji-input').value.trim()||'🎯';if(!name){showToast('Escribe un nombre','error');return;}if(!target||target<=0){showToast('Ingresa el monto','error');return;}state.goals.push({id:Date.now(),emoji,name,target,current});await pushToServer();document.getElementById('add-goal-screen').classList.remove('open');renderGoals();renderDashboard();showToast('✅ Meta creada','success');}
+async function deleteGoal(id){if(!confirm('¿Eliminar esta meta?'))return;state.goals=state.goals.filter(g=>g.id!==id);await pushToServer();renderGoals();renderDashboard();showToast('Meta eliminada','success');}
 
-  // Patterns for Banco Pichincha notifications
-  const patterns = [
-    /(?:consumo|compra|pago|débito|cargo)[^\d]*\$?\s*([\d,]+\.?\d*)/i,
-    /\$\s*([\d,]+\.?\d*)/,
-    /(?:monto|valor|total)[:\s]+\$?\s*([\d,]+\.?\d*)/i,
-    /([\d,]+\.\d{2})\s*(?:usd|dólares|USD)/i,
-  ];
+// ── CREDITS
+function openAddCredit(){document.getElementById('add-credit-screen').classList.add('open');['credit-name-input','credit-total-input','credit-paid-input','credit-ideal-input','credit-min-input'].forEach(id=>document.getElementById(id).value='');document.getElementById('credit-emoji-input').value='💳';}
+function closeAddCredit(e){if(e.target===document.getElementById('add-credit-screen'))document.getElementById('add-credit-screen').classList.remove('open');}
+async function saveCredit(){const name=document.getElementById('credit-name-input').value.trim();const total=parseFloat(document.getElementById('credit-total-input').value);const paid=parseFloat(document.getElementById('credit-paid-input').value)||0;const ideal=parseFloat(document.getElementById('credit-ideal-input').value)||0;const min=parseFloat(document.getElementById('credit-min-input').value)||0;const emoji=document.getElementById('credit-emoji-input').value.trim()||'💳';if(!name){showToast('Escribe un nombre','error');return;}if(!total||total<=0){showToast('Ingresa el monto total','error');return;}if(ideal<=0){showToast('Ingresa cuota ideal','error');return;}if(min<=0){showToast('Ingresa cuota mínima','error');return;}if(!state.credits)state.credits=[];state.credits.push({id:Date.now(),emoji,name,total,paid,ideal,min,payments:[]});await pushToServer();document.getElementById('add-credit-screen').classList.remove('open');renderCredits();showToast('✅ Crédito guardado','success');}
+async function deleteCredit(id){if(!confirm('¿Eliminar este crédito?'))return;state.credits=state.credits.filter(c=>c.id!==id);await pushToServer();renderCredits();showToast('Eliminado','success');}
 
-  let amount = null;
-  for (const pat of patterns) {
-    const m = text.match(pat);
-    if (m) { amount = parseFloat(m[1].replace(',','')); break; }
-  }
+let payingCreditId=null,payAmount='';
+function openPayCredit(id){payingCreditId=id;payAmount='';const c=state.credits.find(c=>c.id===id);document.getElementById('pay-credit-title').textContent=`Pagar — ${c.name}`;document.getElementById('pay-credit-sub').textContent=`Faltan ${fmt(Math.max(c.total-(c.paid||0),0))} por pagar`;document.getElementById('quick-ideal-val').textContent=fmt(c.ideal);document.getElementById('quick-min-val').textContent=fmt(c.min);document.getElementById('pay-amount-display').textContent='0';document.getElementById('pay-credit-screen').classList.add('open');}
+function closePayCredit(e){if(e.target===document.getElementById('pay-credit-screen'))document.getElementById('pay-credit-screen').classList.remove('open');}
+function setPayQuick(t){const c=state.credits.find(c=>c.id===payingCreditId);payAmount=String(t==='ideal'?c.ideal:c.min);document.getElementById('pay-amount-display').textContent=payAmount;}
+function payNumPress(k){const btn=event.currentTarget;btn.style.transform='scale(0.82)';setTimeout(()=>{btn.style.transition='transform 0.35s cubic-bezier(.34,1.56,.64,1)';btn.style.transform='scale(1)';setTimeout(()=>btn.style.transition='',400);},60);if(k==='del')payAmount=payAmount.slice(0,-1);else if(k==='.'){if(!payAmount.includes('.'))payAmount+='.';}else{if(payAmount.length>=8)return;payAmount+=k;}document.getElementById('pay-amount-display').textContent=payAmount||'0';}
+async function savePayment(){const amount=parseFloat(payAmount);if(!amount||amount<=0){showToast('Ingresa un monto','error');return;}const c=state.credits.find(c=>c.id===payingCreditId);if(!c)return;c.paid=(c.paid||0)+amount;if(!c.payments)c.payments=[];c.payments.push({amount,date:new Date().toISOString()});state.transactions.unshift({id:Date.now(),type:'gasto',amount,desc:`Pago crédito: ${c.name}`,cat:'credito',date:new Date().toISOString()});await pushToServer();document.getElementById('pay-credit-screen').classList.remove('open');renderCredits();renderDashboard();if(state.currentTab==='txns')renderTxns();const done=c.paid>=c.total;showToast(done?`🎉 ¡${c.name} saldado!`:`✅ Pago ${fmt(amount)} registrado`,'success');}
 
-  // Detect merchant
-  const merchantPatterns = [
-    /(?:en|at|comercio|establecimiento)[:\s]+([A-Z][A-Za-z\s]{2,30})/,
-    /([A-Z]{3,}(?:\s[A-Z]{2,})*)/
-  ];
-  let merchant = 'Compra con tarjeta';
-  for (const pat of merchantPatterns) {
-    const m = text.match(pat);
-    if (m && m[1].length > 3) { merchant = m[1].trim(); break; }
-  }
-
-  if (!amount) {
-    resultEl.style.display='block';
-    resultEl.style.background='rgba(248,113,113,0.1)';
-    resultEl.style.borderColor='rgba(248,113,113,0.2)';
-    resultEl.style.color='var(--red)';
-    resultEl.textContent='No se detectó un monto. Asegúrate de pegar el texto completo del correo.';
-    return;
-  }
-
-  resultEl.style.display='block';
-  resultEl.style.background='rgba(74,222,128,0.1)';
-  resultEl.style.borderColor='rgba(74,222,128,0.2)';
-  resultEl.style.color='var(--green)';
-  resultEl.innerHTML=`✅ Detectado: <strong>${fmt(amount)}</strong> en ${merchant} — <span style="text-decoration:underline;cursor:pointer" onclick="importParsed(${amount},'${merchant.replace(/'/g,"\\'")}')">Importar como gasto</span>`;
+// ── PARSER
+function parseEmail(){
+  const text=document.getElementById('parser-input').value;
+  const resultEl=document.getElementById('parse-result');
+  let amount=null;
+  const m1=text.match(/Monto\s+\$\s*([\d.]+,\d{2})\s*USD/i);
+  if(m1)amount=parseFloat(m1[1].replace(/\./g,'').replace(',','.'));
+  if(!amount){const m2=text.match(/Pagaste\s+\$\s*([\d.]+,\d{2})\s+a\s/i);if(m2)amount=parseFloat(m2[1].replace(/\./g,'').replace(',','.'));}
+  if(!amount){const m3=text.match(/\$\s*([\d.]+,\d{2})\s*USD/i);if(m3)amount=parseFloat(m3[1].replace(/\./g,'').replace(',','.'));}
+  let merchant='Pago DeUna';
+  const mb=text.match(/Nombre del beneficiario\s{2,}([^\n\t$]+)/i);if(mb)merchant=mb[1].trim();
+  else{const mp=text.match(/Pagaste\s+\$[\d.,]+\s+a\s+([^c]+?)\s+con\s+Deuna/i);if(mp)merchant=mp[1].trim();}
+  if(!amount){resultEl.style.display='block';resultEl.style.background='rgba(248,113,113,0.1)';resultEl.style.borderColor='rgba(248,113,113,0.2)';resultEl.style.color='var(--red)';resultEl.textContent='No se detectó monto. Pega el texto completo del correo.';return;}
+  resultEl.style.display='block';resultEl.style.background='rgba(74,222,128,0.1)';resultEl.style.border='1px solid rgba(74,222,128,0.2)';resultEl.style.color='var(--green)';
+  resultEl.innerHTML=`✅ <strong>${fmt(amount)}</strong> · ${merchant} — <span style="text-decoration:underline;cursor:pointer" onclick="importParsed(${amount},'${merchant.replace(/'/g,"\\\'")}')">Importar como gasto</span>`;
 }
+async function importParsed(amount,merchant){state.transactions.unshift({id:Date.now(),type:'gasto',amount,desc:merchant,cat:'general',date:new Date().toISOString(),source:'deuna'});await pushToServer();document.getElementById('parser-input').value='';document.getElementById('parse-result').style.display='none';renderTxns();renderDashboard();showToast(`✅ Importado ${fmt(amount)}`,'success');}
 
-function importParsed(amount, merchant) {
-  state.transactions.unshift({
-    id: Date.now(), type:'gasto', amount,
-    desc: merchant, cat:'general',
-    date: new Date().toISOString()
-  });
-  saveState();
-  document.getElementById('parser-input').value='';
-  document.getElementById('parse-result').style.display='none';
-  renderTxns(); renderDashboard();
-  showToast(`✅ Importado ${fmt(amount)}`,'success');
-}
+// ── SETTINGS
+function exportData(){const rows=['Tipo,Descripción,Categoría,Monto,Fecha'];state.transactions.forEach(t=>rows.push(`${t.type},"${t.desc}",${t.cat},${t.amount},${new Date(t.date).toLocaleDateString('es')}`));const blob=new Blob([rows.join('\n')],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='mxr-finanzas.csv';a.click();showToast('✅ CSV exportado','success');}
+async function confirmReset(){if(!confirm('¿Borrar TODOS los datos? No se puede deshacer.'))return;state.transactions=[];state.goals=[];state.credits=[];await pushToServer();renderDashboard();showToast('Datos borrados','error');}
 
-// ──────────────────────────────────────────
-// SETTINGS
-// ──────────────────────────────────────────
-function toggleSwitch(id) {
-  document.getElementById(id).classList.toggle('on');
-}
-
-function exportData() {
-  const rows = ['Tipo,Descripción,Categoría,Monto,Fecha'];
-  state.transactions.forEach(t=>{
-    rows.push(`${t.type},"${t.desc}",${t.cat},${t.amount},${new Date(t.date).toLocaleDateString('es')}`);
-  });
-  const csv = rows.join('\n');
-  const blob = new Blob([csv],{type:'text/csv'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href=url; a.download='mxr-finanzas.csv'; a.click();
-  showToast('✅ CSV exportado','success');
-}
-
-function confirmReset() {
-  if (confirm('¿Borrar TODOS los datos? Esto no se puede deshacer.')) {
-    state.transactions = []; state.goals = [];
-    saveState(); renderDashboard();
-    showToast('Datos borrados','error');
-  }
-}
-
-// ──────────────────────────────────────────
-// TOAST
-// ──────────────────────────────────────────
+// ── TOAST
 let toastTimer;
-function showToast(msg, type='success') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast ' + type + ' show';
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>{ el.classList.remove('show'); }, 2400);
-}
+function showToast(msg,type='success'){const el=document.getElementById('toast');el.textContent=msg;el.className='toast '+type+' show';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400);}
 
-// ──────────────────────────────────────────
-// CLOCK
-// ──────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-  ['clock','clock2','clock3','clock4'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.textContent=t;
-  });
-  const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const badge = document.getElementById('month-badge');
-  if(badge) badge.textContent = months[now.getMonth()] + ' ' + now.getFullYear();
-}
+// ── INIT
+async function init() {
+  const loading=document.getElementById('loading');
+  const loadingText=document.getElementById('loading-text');
 
-// ──────────────────────────────────────────
-// SYNC EN TIEMPO REAL — Render.com server
-// ──────────────────────────────────────────
-const SYNC = {
-  // ← Marlon: cuando tengas la URL de Render, reemplaza aquí
-  serverUrl: localStorage.getItem('mxr_server_url') || '',
-  secret: localStorage.getItem('mxr_secret') || 'mxr2026pichincha',
-  interval: null,
-  lastCheck: null,
-  status: 'disconnected' // 'connected' | 'disconnected' | 'syncing'
-};
-
-function setSyncStatus(s) {
-  SYNC.status = s;
-  const dot = document.getElementById('sync-dot');
-  const lbl = document.getElementById('sync-label');
-  if (!dot || !lbl) return;
-  const map = {
-    connected:    { color:'#4ade80', text:'En línea' },
-    syncing:      { color:'#facc15', text:'Sincronizando...' },
-    disconnected: { color:'rgba(255,255,255,0.25)', text:'Sin servidor' },
-    error:        { color:'#f87171', text:'Error de conexión' }
-  };
-  const cfg = map[s] || map.disconnected;
-  dot.style.background = cfg.color;
-  dot.style.boxShadow = s==='connected' ? `0 0 6px ${cfg.color}` : 'none';
-  lbl.textContent = cfg.text;
-}
-
-async function syncFromServer() {
-  if (!SYNC.serverUrl) return;
-  setSyncStatus('syncing');
-  try {
-    const res = await fetch(`${SYNC.serverUrl}/transactions`, {
-      headers: { 'x-mxr-secret': SYNC.secret }
-    });
-    if (!res.ok) throw new Error('Server error');
-    const data = await res.json();
-
-    if (data.ok && Array.isArray(data.transactions) && data.transactions.length > 0) {
-      // Merge: add server txns not already in local state (match by id)
-      const localIds = new Set(state.transactions.map(t => String(t.id)));
-      const newTxns = data.transactions.filter(t => !localIds.has(String(t.id)));
-
-      if (newTxns.length > 0) {
-        state.transactions = [...newTxns, ...state.transactions]
-          .sort((a,b) => new Date(b.date) - new Date(a.date));
-        saveState();
-        renderDashboard();
-        if (state.currentTab === 'txns') renderTxns();
-        // Notify user of new transactions
-        newTxns.forEach(t => {
-          showToast(`📧 ${t.type==='ingreso'?'+':'−'}${fmt(t.amount)} desde correo`, 'success');
-        });
-      }
-      setSyncStatus('connected');
-    } else {
-      setSyncStatus('connected');
-    }
-  } catch(e) {
-    setSyncStatus('error');
-    console.warn('Sync error:', e.message);
-  }
-}
-
-function startSync() {
-  if (!SYNC.serverUrl) { setSyncStatus('disconnected'); return; }
-  syncFromServer(); // immediate first check
-  SYNC.interval = setInterval(syncFromServer, 30000); // every 30s
-}
-
-function stopSync() {
-  clearInterval(SYNC.interval);
   setSyncStatus('disconnected');
-}
 
-// ── SERVER CONFIG UI (dentro de ajustes)
-function openServerConfig() {
-  const url = prompt('URL de tu servidor Render:\n(ej: https://mxr-finance.onrender.com)', SYNC.serverUrl);
-  if (url === null) return;
-  const clean = url.trim().replace(/\/$/, '');
-  if (!clean) {
-    SYNC.serverUrl = '';
-    localStorage.removeItem('mxr_server_url');
-    stopSync();
-    showToast('Servidor desconectado', 'error');
-    return;
-  }
-  SYNC.serverUrl = clean;
-  localStorage.setItem('mxr_server_url', clean);
-  stopSync();
-  startSync();
-  showToast('Conectando...', 'success');
-}
-
-// ── Inject sync indicator into dashboard header and settings
-function injectSyncUI() {
-  // Status pill in dashboard header area
-  const statusBar = document.querySelector('#s-home .status-bar');
-  if (statusBar && !document.getElementById('sync-dot')) {
-    const pill = document.createElement('div');
-    pill.style.cssText = 'display:flex;align-items:center;gap:5px;cursor:pointer;';
-    pill.onclick = openServerConfig;
-    pill.innerHTML = `
-      <div id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.4s ease;flex-shrink:0"></div>
-      <span id="sync-label" style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:500">Sin servidor</span>
-    `;
-    statusBar.insertBefore(pill, statusBar.children[1]);
+  if(serverUrl) {
+    loadingText.textContent='Conectando al servidor...';
+    setSyncStatus('syncing');
+    const ok = await pullFromServer();
+    if(ok) setSyncStatus('connected');
+    else setSyncStatus('error');
+  } else {
+    loadingText.textContent='Sin servidor configurado';
+    setTimeout(()=>{ loading.classList.add('hidden'); },1200);
   }
 
-  // Settings row for server config
-  const settingsGroups = document.querySelectorAll('#s-settings .settings-group');
-  const lastGroup = settingsGroups[settingsGroups.length - 1];
-  if (lastGroup && !document.getElementById('server-settings-row')) {
-    const row = document.createElement('div');
-    row.id = 'server-settings-row';
-    row.className = 'settings-row';
-    row.onclick = openServerConfig;
-    row.style.borderTop = '1px solid var(--glass-border)';
-    row.innerHTML = `
-      <div class="settings-row-icon sri-green" style="background:rgba(106,0,255,0.15);color:var(--purple-glow)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5a17 17 0 0 1 21 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.5 16.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg>
-      </div>
-      <div class="settings-row-text">
-        <div class="srt-title">Servidor en tiempo real</div>
-        <div class="srt-sub" id="server-url-display">${SYNC.serverUrl ? SYNC.serverUrl.replace('https://','') : 'No configurado — toca para agregar'}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:5px">
-        <div id="sync-dot-settings" style="width:8px;height:8px;border-radius:50%;background:${SYNC.serverUrl?'#4ade80':'rgba(255,255,255,0.2)'}"></div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text3)"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    `;
-    lastGroup.appendChild(row);
-  }
+  renderDashboard();
+
+  // Hide loading
+  setTimeout(()=>{ loading.classList.add('hidden'); },800);
+
+  // Nav bar entrance
+  const nav=document.getElementById('nav-bar');
+  nav.style.opacity='0';nav.style.transform='translateX(-50%) translateY(24px)';nav.style.transition='opacity 0.5s ease,transform 0.55s cubic-bezier(.34,1.3,.64,1)';
+  setTimeout(()=>{nav.style.opacity='1';nav.style.transform='translateX(-50%) translateY(0)';setTimeout(()=>nav.style.transition='',600);},400);
+
+  startPolling();
 }
 
-// ──────────────────────────────────────────
-// INIT
-// ──────────────────────────────────────────
-loadState();
-updateClock();
-setInterval(updateClock, 30000);
-renderDashboard();
-
-window.addEventListener('load', ()=>{
-  // Nav bar entrance animation
-  const nav = document.getElementById('nav-bar');
-  nav.style.opacity='0';
-  nav.style.transform='translateX(-50%) translateY(24px)';
-  nav.style.transition='opacity 0.5s ease, transform 0.55s cubic-bezier(.34,1.3,.64,1)';
-  setTimeout(()=>{
-    nav.style.opacity='1';
-    nav.style.transform='translateX(-50%) translateY(0)';
-    setTimeout(()=>{ nav.style.transition=''; }, 600);
-  }, 300);
-
-  // Inject sync UI and start polling
-  setTimeout(()=>{
-    injectSyncUI();
-    startSync();
-  }, 500);
-});
+window.addEventListener('load', init);
 </script>
 </body>
 </html>
